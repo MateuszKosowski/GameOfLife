@@ -1,4 +1,4 @@
-package org.teamOne;
+package org.team1;
 
 import java.util.Random;
 

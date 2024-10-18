@@ -1,6 +1,6 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.teamOne.GameOfLifeBoard;
+import org.team1.GameOfLifeBoard;
 
 import java.util.Arrays;
 
