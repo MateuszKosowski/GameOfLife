@@ -4,7 +4,9 @@ public class PlainGameOfLifeSimulator implements GameOfLifeSimulator {
     @Override
     public void doStep(GameOfLifeBoard board) {
         boolean[][] boardCopy = board.getBoard();
-        int aliveNeighbors, i, j;
+        int aliveNeighbors;
+        int i;
+        int j;
 
         for (i = 0; i < boardCopy.length; i++) {
             for (j = 0; j < boardCopy[0].length; j++) {

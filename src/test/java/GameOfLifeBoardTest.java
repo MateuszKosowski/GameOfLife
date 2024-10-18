@@ -26,7 +26,7 @@ class GameOfLifeBoardTest {
         gameOfLifeBoard.set(0, 2, true);
         gameOfLifeBoard.set(1, 0, true);
         gameOfLifeBoard.set(2, 0, true);
-        gameOfLifeBoard.doStep();
+        gameOfLifeBoard.doSimulationStep();
         assertTrue(gameOfLifeBoard.get(7, 1));
         assertTrue(gameOfLifeBoard.get(1, 7));
     }
@@ -39,7 +39,7 @@ class GameOfLifeBoardTest {
         gameOfLifeBoard.set(3, 3, true);
         gameOfLifeBoard.set(3, 4, true);
         gameOfLifeBoard.set(3, 5, true);
-        gameOfLifeBoard.doStep();
+        gameOfLifeBoard.doSimulationStep();
         assertTrue(gameOfLifeBoard.get(3, 4));
     }
 
@@ -50,7 +50,7 @@ class GameOfLifeBoardTest {
         gameOfLifeBoard.set(3, 4, true);
         gameOfLifeBoard.set(3, 5, true);
         gameOfLifeBoard.set(4, 4, true);
-        gameOfLifeBoard.doStep();
+        gameOfLifeBoard.doSimulationStep();
         assertTrue(gameOfLifeBoard.get(3, 4));
     }
 
@@ -63,7 +63,7 @@ class GameOfLifeBoardTest {
         gameOfLifeBoard.set(3, 5, true);
         gameOfLifeBoard.set(4, 4, true);
         gameOfLifeBoard.set(2, 4, true);
-        gameOfLifeBoard.doStep();
+        gameOfLifeBoard.doSimulationStep();
         assertFalse(gameOfLifeBoard.get(3, 4));
     }
 
