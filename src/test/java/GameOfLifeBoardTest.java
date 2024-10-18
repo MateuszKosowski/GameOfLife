@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.team1.GameOfLifeBoard;
@@ -72,5 +73,12 @@ class GameOfLifeBoardTest {
     void shouldFillBoardsWithDifferentStartValues() throws Exception {
         GameOfLifeBoard gameOfLifeBoard1 = new GameOfLifeBoard(8, 8);
         assertFalse(Arrays.deepEquals(gameOfLifeBoard.getBoard(), gameOfLifeBoard1.getBoard()));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenWidthOrHeightIsNegativeNumber() {
+        Assertions.assertThrows(Exception.class, () -> new GameOfLifeBoard(-1, 1));
+
+        Assertions.assertThrows(Exception.class, () -> new GameOfLifeBoard(1, -1));
     }
 }
