@@ -21,14 +21,14 @@ class GameOfLifeBoardTest {
     @Test
     void shouldBecomeAliveWithExactlyThreeAliveNeighbors() {
         gameOfLifeBoard.fillFalse();
-        gameOfLifeBoard.setCoordinate(0, 0, true);
-        gameOfLifeBoard.setCoordinate(0, 1, true);
-        gameOfLifeBoard.setCoordinate(0, 2, true);
-        gameOfLifeBoard.setCoordinate(1, 0, true);
-        gameOfLifeBoard.setCoordinate(2, 0, true);
+        gameOfLifeBoard.set(0, 0, true);
+        gameOfLifeBoard.set(0, 1, true);
+        gameOfLifeBoard.set(0, 2, true);
+        gameOfLifeBoard.set(1, 0, true);
+        gameOfLifeBoard.set(2, 0, true);
         gameOfLifeBoard.doStep();
-        assertTrue(gameOfLifeBoard.getCoordinate(7, 1));
-        assertTrue(gameOfLifeBoard.getCoordinate(1, 7));
+        assertTrue(gameOfLifeBoard.get(7, 1));
+        assertTrue(gameOfLifeBoard.get(1, 7));
     }
 
     // żywa komórka z dwoma lub trzema sąsiadami pozostaje żywa
@@ -36,35 +36,35 @@ class GameOfLifeBoardTest {
     @Test
     void shouldStayAliveWithTwoNeighborsAndDieWithOne() {
         gameOfLifeBoard.fillFalse();
-        gameOfLifeBoard.setCoordinate(3, 3, true);
-        gameOfLifeBoard.setCoordinate(3, 4, true);
-        gameOfLifeBoard.setCoordinate(3, 5, true);
+        gameOfLifeBoard.set(3, 3, true);
+        gameOfLifeBoard.set(3, 4, true);
+        gameOfLifeBoard.set(3, 5, true);
         gameOfLifeBoard.doStep();
-        assertTrue(gameOfLifeBoard.getCoordinate(3, 4));
+        assertTrue(gameOfLifeBoard.get(3, 4));
     }
 
     @Test
     void shouldStayAliveWithThreeNeighbors() {
         gameOfLifeBoard.fillFalse();
-        gameOfLifeBoard.setCoordinate(3, 3, true);
-        gameOfLifeBoard.setCoordinate(3, 4, true);
-        gameOfLifeBoard.setCoordinate(3, 5, true);
-        gameOfLifeBoard.setCoordinate(4, 4, true);
+        gameOfLifeBoard.set(3, 3, true);
+        gameOfLifeBoard.set(3, 4, true);
+        gameOfLifeBoard.set(3, 5, true);
+        gameOfLifeBoard.set(4, 4, true);
         gameOfLifeBoard.doStep();
-        assertTrue(gameOfLifeBoard.getCoordinate(3, 4));
+        assertTrue(gameOfLifeBoard.get(3, 4));
     }
 
     // żywa komórka z więcej niż trzema sąsiadami umiera "z zatłoczenia"
     @Test
     void shouldDieWithMoreThanThreeNeighbors() {
         gameOfLifeBoard.fillFalse();
-        gameOfLifeBoard.setCoordinate(3, 3, true);
-        gameOfLifeBoard.setCoordinate(3, 4, true);
-        gameOfLifeBoard.setCoordinate(3, 5, true);
-        gameOfLifeBoard.setCoordinate(4, 4, true);
-        gameOfLifeBoard.setCoordinate(2, 4, true);
+        gameOfLifeBoard.set(3, 3, true);
+        gameOfLifeBoard.set(3, 4, true);
+        gameOfLifeBoard.set(3, 5, true);
+        gameOfLifeBoard.set(4, 4, true);
+        gameOfLifeBoard.set(2, 4, true);
         gameOfLifeBoard.doStep();
-        assertFalse(gameOfLifeBoard.getCoordinate(3, 4));
+        assertFalse(gameOfLifeBoard.get(3, 4));
     }
 
     // dwa kolejne wykonania konstruktora klasy org.nikodem.GameOfLifeBoard
