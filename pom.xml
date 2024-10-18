@@ -118,6 +118,17 @@
                     </reportSet>
                 </reportSets>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>3.3.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.25.0</version>
+            </plugin>
+
         </plugins>
     </reporting>
 
@@ -130,4 +141,30 @@
         </dependency>
     </dependencies>
 
+    <developers>
+        <developer>
+            <id>251598</id>
+            <name>Nikodem Nowak</name>
+            <email>251598@edu.p.lodz.pl</email>
+            <properties>
+                <picUrl>https://images.stacjazwierzak.pl/2024/08/31f23bc2-a1f4-4e2c-80b7-1021d4d3c90c.webp</picUrl>
+            </properties>
+            <roles>
+                <role>Junior Java Student Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>251558</id>
+            <name>Mateusz Kosowski</name>
+            <email>251558@edu.p.lodz.pl</email>
+            <properties>
+                <picUrl>https://ocdn.eu/pulscms-transforms/1/qdNk9kqTURBXy8xNmY5OTc3NTZlNzJhMzk5Zjc0OTZiZWUwODAwZjQ2MS5qcGVnk5UDAADNCgDNBaCTBc0BaM0B9JMFzQSwzQaD3gACoTAFoTEA</picUrl>
+            </properties>
+            <roles>
+                <role>Senior Java Student Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <description>Projekt grupy laboratoryjnej JM_CZ_1200_01</description>
 </project>
