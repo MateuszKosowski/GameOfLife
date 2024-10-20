@@ -2,6 +2,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.team1.GameOfLifeBoard;
+import org.team1.GameOfLifeSimulator;
+import org.team1.PlainGameOfLifeSimulator;
 
 import java.util.Arrays;
 
@@ -10,10 +12,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GameOfLifeBoardTest {
     private GameOfLifeBoard gameOfLifeBoard;
+    private final GameOfLifeSimulator gameOfLifeSimulator = new PlainGameOfLifeSimulator();
 
     @BeforeEach
     void createGameOfLifeBoard() throws Exception {
-         gameOfLifeBoard = new GameOfLifeBoard(8, 8);
+         gameOfLifeBoard = new GameOfLifeBoard(8, 8, gameOfLifeSimulator);
     }
 
     // Martwa komórka mająca dokładnie trzech żywych sąsiadów staje się żywa w następnym kroku
@@ -71,14 +74,14 @@ class GameOfLifeBoardTest {
     // generują inny początkowy układ komórek żywych i martwych
     @Test
     void shouldFillBoardsWithDifferentStartValues() throws Exception {
-        GameOfLifeBoard gameOfLifeBoard1 = new GameOfLifeBoard(8, 8);
+        GameOfLifeBoard gameOfLifeBoard1 = new GameOfLifeBoard(8, 8, gameOfLifeSimulator);
         assertFalse(Arrays.deepEquals(gameOfLifeBoard.getBoard(), gameOfLifeBoard1.getBoard()));
     }
 
     @Test
     void shouldThrowExceptionWhenWidthOrHeightIsNegativeNumber() {
-        Assertions.assertThrows(Exception.class, () -> new GameOfLifeBoard(-1, 1));
+        Assertions.assertThrows(Exception.class, () -> new GameOfLifeBoard(-1, 1, gameOfLifeSimulator));
 
-        Assertions.assertThrows(Exception.class, () -> new GameOfLifeBoard(1, -1));
+        Assertions.assertThrows(Exception.class, () -> new GameOfLifeBoard(1, -1, gameOfLifeSimulator));
     }
 }

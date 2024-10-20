@@ -4,12 +4,15 @@ import java.util.Random;
 
 public class GameOfLifeBoard {
     private boolean[][] board;
+    private final GameOfLifeSimulator gameOfLifeSimulator;
 
-    public GameOfLifeBoard(int width, int height) throws Exception {
+    public GameOfLifeBoard(int width, int height, GameOfLifeSimulator gameOfLifeSimulator) throws Exception {
         if (width < 0 || height < 0) {
             throw new Exception("Width or height is negative number");
         }
+        this.gameOfLifeSimulator = gameOfLifeSimulator;
         this.board = new boolean[width][height];
+
         fillBoard();
     }
 
@@ -30,7 +33,7 @@ public class GameOfLifeBoard {
     }
 
     public void doSimulationStep() {
-        new PlainGameOfLifeSimulator().doStep(this);
+        gameOfLifeSimulator.doStep(this);
     }
 
     public void fillFalse() {
