@@ -1,5 +1,6 @@
 package org.team1;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class GameOfLifeBoard {
@@ -10,7 +11,7 @@ public class GameOfLifeBoard {
         if (width < 0 || height < 0) {
             throw new Exception("Width or height is negative number");
         }
-        this.gameOfLifeSimulator = gameOfLifeSimulator;
+        this.gameOfLifeSimulator = Objects.requireNonNullElseGet(gameOfLifeSimulator, PlainGameOfLifeSimulator::new);
         this.board = new boolean[width][height];
 
         fillBoard();
