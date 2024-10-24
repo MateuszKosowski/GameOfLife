@@ -4,7 +4,7 @@ import java.util.Objects;
 import java.util.Random;
 
 public class GameOfLifeBoard {
-    private boolean[][] board;
+    private GameOfLifeCell[][] board;
     private final GameOfLifeSimulator gameOfLifeSimulator;
 
     public GameOfLifeBoard(int width, int height, GameOfLifeSimulator gameOfLifeSimulator) throws Exception {
@@ -12,13 +12,13 @@ public class GameOfLifeBoard {
             throw new Exception("Width or height is negative number");
         }
         this.gameOfLifeSimulator = Objects.requireNonNullElseGet(gameOfLifeSimulator, PlainGameOfLifeSimulator::new);
-        this.board = new boolean[width][height];
+        this.board = new GameOfLifeCell[width][height];
 
         fillBoard();
     }
 
-    public boolean[][] getBoard() {
-        boolean[][] tempBoard = new boolean[board.length][board[0].length];
+    public GameOfLifeCell[][] getBoard() {
+        GameOfLifeCell[][] tempBoard = new GameOfLifeCell[board.length][board[0].length];
         for (int i = 0; i < board.length; i++) {
             System.arraycopy(board[i], 0, tempBoard[i], 0, board[0].length);
         }
@@ -26,11 +26,11 @@ public class GameOfLifeBoard {
     }
 
     public boolean get(int x, int y) {
-        return board[x][y];
+        return board[x][y].getValue();
     }
 
     public void set(int x, int y, boolean value) {
-        board[x][y] = value;
+        board[x][y].updateState(value);
     }
 
     public void doSimulationStep() {
@@ -38,14 +38,18 @@ public class GameOfLifeBoard {
     }
 
     public void fillFalse() {
-        board = new boolean[board.length][board[0].length];
+        for (GameOfLifeCell[] gameOfLifeCells : this.board) {
+            for (int j = 0; j < this.board[0].length; j++) {
+                gameOfLifeCells[j].updateState(false);
+            }
+        }
     }
 
     private void fillBoard() {
         Random rand = new Random();
         for (int i = 0; i < this.board.length; i++) {
             for (int j = 0; j < this.board[0].length; j++) {
-                this.board[i][j] = rand.nextBoolean();
+                this.board[i][j].updateState(rand.nextBoolean()); ;
             }
         }
     }

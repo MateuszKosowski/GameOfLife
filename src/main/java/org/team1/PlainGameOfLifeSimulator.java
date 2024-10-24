@@ -1,35 +1,25 @@
 package org.team1;
 
 public class PlainGameOfLifeSimulator implements GameOfLifeSimulator {
+
     @Override
     public void doStep(GameOfLifeBoard board) {
-        boolean[][] boardCopy = board.getBoard();
-        int aliveNeighbors;
-        int i;
-        int j;
-
-        for (i = 0; i < boardCopy.length; i++) {
-            for (j = 0; j < boardCopy[0].length; j++) {
-                aliveNeighbors = countAliveNeighbors(i, j, board.getBoard());
-                if (boardCopy[i][j]) {
-                    boardCopy[i][j] = aliveNeighbors == 2 || aliveNeighbors == 3;
-                } else {
-                    if (aliveNeighbors == 3) {
-                        boardCopy[i][j] = true;
-                    }
-                }
+        boolean[][] newBoard = new boolean[board.getBoard().length][board.getBoard()[0].length];
+        for (int i = 0; i < board.getBoard().length; i++) {
+            for (int j = 0; j < board.getBoard()[0].length; j++) {
+                newBoard[i][j] = board.getBoard()[i][j].nextState();
             }
         }
-
-        for (i = 0; i < boardCopy.length; i++) {
-            for (j = 0; j < boardCopy[0].length; j++)  {
-                board.set(i, j, boardCopy[i][j]);
+        for (int i = 0; i < board.getBoard().length; i++) {
+            for (int j = 0; j < board.getBoard()[0].length; j++) {
+                board.getBoard()[i][j].updateState(newBoard[i][j]);
             }
         }
     }
 
-    private int countAliveNeighbors(int x, int y, boolean[][] board) {
-        int aliveNeighbors = 0;
+    private void assignNeighborsToCell(int x, int y, GameOfLifeCell[][] board) {
+        GameOfLifeCell[] neighbors = new GameOfLifeCell[8];
+        int index = 0;
         for (int i = x - 1; i <= x + 1; i++) {
             for (int j = y - 1; j <= y + 1; j++) {
                 int tempI = i;
@@ -48,11 +38,12 @@ public class PlainGameOfLifeSimulator implements GameOfLifeSimulator {
                     tempJ = 0;
                 }
 
-                if (board[tempI][tempJ] && (tempI != x || tempJ != y)) {
-                    aliveNeighbors++;
+                if (board[tempI][tempJ].getValue() && (tempI != x || tempJ != y)) {
+                    neighbors[index] = board[tempI][tempJ];
                 }
+                index++;
             }
         }
-        return aliveNeighbors;
+        board[x][y].setNeighbors(neighbors);
     }
 }
