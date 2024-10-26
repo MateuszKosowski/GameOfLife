@@ -4,7 +4,7 @@ import java.util.Objects;
 import java.util.Random;
 
 public class GameOfLifeBoard {
-    private GameOfLifeCell[][] board;
+    private final GameOfLifeCell[][] board;
     private final GameOfLifeSimulator gameOfLifeSimulator;
 
     public GameOfLifeBoard(int width, int height, GameOfLifeSimulator gameOfLifeSimulator) throws Exception {
@@ -49,10 +49,43 @@ public class GameOfLifeBoard {
         Random rand = new Random();
         for (int i = 0; i < this.board.length; i++) {
             for (int j = 0; j < this.board[0].length; j++) {
-                this.board[i][j].updateState(rand.nextBoolean()); ;
+                this.board[i][j] = new GameOfLifeCell(rand.nextBoolean());
+            }
+        }
+        for (int i = 0; i < this.board.length; i++) {
+            for (int j = 0; j < this.board[0].length; j++) {
+                assignNeighborsToCell(i, j);
             }
         }
     }
 
+    public void assignNeighborsToCell(int x, int y) {
+        GameOfLifeCell[] neighbors = new GameOfLifeCell[8];
+        int index = 0;
+        for (int i = x - 1; i <= x + 1; i++) {
+            for (int j = y - 1; j <= y + 1; j++) {
+                int tempI = i;
+                int tempJ = j;
 
+                if (tempI < 0) {
+                    tempI = board.length - 1;
+                }
+                if (tempI == board.length) {
+                    tempI = 0;
+                }
+                if (tempJ < 0) {
+                    tempJ = board[0].length - 1;
+                }
+                if (tempJ == board[0].length) {
+                    tempJ = 0;
+                }
+
+                if (tempI != x || tempJ != y) {
+                    neighbors[index] = board[tempI][tempJ];
+                    index++;
+                }
+            }
+        }
+        board[x][y].setNeighbors(neighbors);
+    }
 }
