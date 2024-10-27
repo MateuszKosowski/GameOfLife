@@ -1,4 +1,5 @@
 package org.team1;
+
 import java.util.List;
 
 public abstract class GameOfLifeLine {
