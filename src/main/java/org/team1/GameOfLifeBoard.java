@@ -4,6 +4,8 @@ import java.util.Objects;
 import java.util.Random;
 
 public class GameOfLifeBoard {
+
+
     private final GameOfLifeCell[][] board;
     private final GameOfLifeSimulator gameOfLifeSimulator;
 
