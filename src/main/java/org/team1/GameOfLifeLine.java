@@ -1,12 +1,10 @@
 package org.team1;
 
-import java.util.List;
-
 public abstract class GameOfLifeLine {
 
-    protected List<GameOfLifeCell> line;
+    protected GameOfLifeCell[] line;
 
-    public GameOfLifeLine(List<GameOfLifeCell> line) {
+    public GameOfLifeLine(GameOfLifeCell[] line) {
         this.line = line;
     }
 
@@ -21,6 +19,6 @@ public abstract class GameOfLifeLine {
     }
 
     public int countDeadCells() {
-        return this.line.size() - countAliveCells();
+        return this.line.length - countAliveCells();
     }
 }

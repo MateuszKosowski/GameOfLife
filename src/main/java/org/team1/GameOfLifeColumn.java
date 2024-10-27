@@ -4,7 +4,7 @@ import java.util.List;
 
 public class GameOfLifeColumn extends GameOfLifeLine {
 
-  public GameOfLifeColumn(List<GameOfLifeCell> line) {
+  public GameOfLifeColumn(GameOfLifeCell[] line) {
     super(line);
   }
 

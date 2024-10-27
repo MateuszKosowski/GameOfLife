@@ -2,8 +2,6 @@ package org.team1;
 
 import java.util.Objects;
 import java.util.Random;
-import java.util.Arrays;
-import java.util.List;
 
 public class GameOfLifeBoard {
 
@@ -108,7 +106,7 @@ public class GameOfLifeBoard {
 
     // Zwracamy wiersz planszy na podstawie indeksu jako obiekt GameOfLifeRow
     public GameOfLifeRow getRow(int index) {
-        List<GameOfLifeCell> rowCells = Arrays.asList(board[index]);
+        GameOfLifeCell[] rowCells = board[index];
         return new GameOfLifeRow(rowCells);
     }
 
@@ -118,7 +116,7 @@ public class GameOfLifeBoard {
         for (int i = 0; i < board.length; i++) {
             columnCells[i] = board[i][index];
         }
-        return new GameOfLifeColumn(Arrays.asList(columnCells));
+        return new GameOfLifeColumn(columnCells);
     }
 
 
