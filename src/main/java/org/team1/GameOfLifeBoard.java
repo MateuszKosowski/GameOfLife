@@ -7,7 +7,6 @@ import java.util.List;
 
 public class GameOfLifeBoard {
 
-
     private final GameOfLifeCell[][] board;
     private final GameOfLifeSimulator gameOfLifeSimulator;
 
@@ -111,6 +110,15 @@ public class GameOfLifeBoard {
     public GameOfLifeRow getRow(int index) {
         List<GameOfLifeCell> rowCells = Arrays.asList(board[index]);
         return new GameOfLifeRow(rowCells);
+    }
+
+    // Zwracamy kolumnę planszy na podstawie indeksu jako obiekt GameOfLifeColumn
+    public GameOfLifeColumn getColumn(int index) {
+        GameOfLifeCell[] columnCells = new GameOfLifeCell[board.length];
+        for (int i = 0; i < board.length; i++) {
+            columnCells[i] = board[i][index];
+        }
+        return new GameOfLifeColumn(Arrays.asList(columnCells));
     }
 
 
