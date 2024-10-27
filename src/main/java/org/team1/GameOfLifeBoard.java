@@ -2,6 +2,8 @@ package org.team1;
 
 import java.util.Objects;
 import java.util.Random;
+import java.util.Arrays;
+import java.util.List;
 
 public class GameOfLifeBoard {
 
@@ -9,6 +11,7 @@ public class GameOfLifeBoard {
     private final GameOfLifeCell[][] board;
     private final GameOfLifeSimulator gameOfLifeSimulator;
 
+    // Konstruktor, który tworzy planszę o podanych wymiarach i przypisuje obiekt GameOfLifeSimulator
     public GameOfLifeBoard(int width, int height, GameOfLifeSimulator gameOfLifeSimulator) throws Exception {
         if (width < 0 || height < 0) {
             throw new Exception("Width or height is negative number");
@@ -19,6 +22,7 @@ public class GameOfLifeBoard {
         fillBoard();
     }
 
+    // Zwracamy kopię naszej planszy
     public GameOfLifeCell[][] getBoard() {
         GameOfLifeCell[][] tempBoard = new GameOfLifeCell[board.length][board[0].length];
         for (int i = 0; i < board.length; i++) {
@@ -27,26 +31,37 @@ public class GameOfLifeBoard {
         return tempBoard;
     }
 
+    // Zwracamy wartość obiektu Cell na podstawie współrzędnych
     public boolean get(int x, int y) {
         return board[x][y].getValue();
     }
 
+    // Ustawiamy wartość dla obiektu Cell na podstawie współrzędnych
     public void set(int x, int y, boolean value) {
         board[x][y].updateState(value);
     }
 
+    // Wykonujemy krok symulacji przekazując obiekt GameOfLifeBoard do obiektu GameOfLifeSimulator
     public void doSimulationStep() {
         gameOfLifeSimulator.doStep(this);
     }
 
+    // Wypełniamy planszę wartościami false i przypisujemy sąsiadów dla każdego Cell
     public void fillFalse() {
         for (GameOfLifeCell[] gameOfLifeCells : this.board) {
             for (int j = 0; j < this.board[0].length; j++) {
                 gameOfLifeCells[j].updateState(false);
             }
         }
+
+        for (int i = 0; i < this.board.length; i++) {
+            for (int j = 0; j < this.board[0].length; j++) {
+                assignNeighborsToCell(i, j);
+            }
+        }
     }
 
+    // Wypełniamy planszę losowymi wartościami i przypisujemy sąsiadów dla każdego Cell
     private void fillBoard() {
         Random rand = new Random();
         for (int i = 0; i < this.board.length; i++) {
@@ -61,6 +76,7 @@ public class GameOfLifeBoard {
         }
     }
 
+    // Każdy obiekt Cell ma 8 sąsiadów, więc przypisujemy sąsiadów dla każdego Cell
     public void assignNeighborsToCell(int x, int y) {
         GameOfLifeCell[] neighbors = new GameOfLifeCell[8];
         int index = 0;
@@ -90,4 +106,12 @@ public class GameOfLifeBoard {
         }
         board[x][y].setNeighbors(neighbors);
     }
+
+    // Zwracamy wiersz planszy na podstawie indeksu jako obiekt GameOfLifeRow
+    public GameOfLifeRow getRow(int index) {
+        List<GameOfLifeCell> rowCells = Arrays.asList(board[index]);
+        return new GameOfLifeRow(rowCells);
+    }
+
+
 }

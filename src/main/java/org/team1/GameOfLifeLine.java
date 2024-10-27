@@ -3,19 +3,16 @@ package org.team1;
 import java.util.List;
 
 public abstract class GameOfLifeLine {
-    protected GameOfLifeBoard board;
-    protected int index;
 
-    public GameOfLifeLine(GameOfLifeBoard board, int index) {
-        this.board = board;
-        this.index = index;
+    protected List<GameOfLifeCell> line;
+
+    public GameOfLifeLine(List<GameOfLifeCell> line) {
+        this.line = line;
     }
-
-    protected abstract List<GameOfLifeCell> getLine();
 
     public int countAliveCells() {
         int aliveCells = 0;
-        for (GameOfLifeCell cell : getLine()) {
+        for (GameOfLifeCell cell : this.line) {
             if (cell.getValue()) {
                 aliveCells++;
             }
@@ -24,6 +21,6 @@ public abstract class GameOfLifeLine {
     }
 
     public int countDeadCells() {
-        return getLine().size() - countAliveCells();
+        return this.line.size() - countAliveCells();
     }
 }
