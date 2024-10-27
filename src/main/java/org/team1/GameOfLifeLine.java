@@ -8,6 +8,10 @@ public abstract class GameOfLifeLine {
         this.line = line;
     }
 
+    public GameOfLifeCell[] getLine() {
+        return this.line;
+    }
+
     public int countAliveCells() {
         int aliveCells = 0;
         for (GameOfLifeCell cell : this.line) {

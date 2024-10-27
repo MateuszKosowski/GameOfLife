@@ -119,5 +119,4 @@ public class GameOfLifeBoard {
         return new GameOfLifeColumn(columnCells);
     }
 
-
 }

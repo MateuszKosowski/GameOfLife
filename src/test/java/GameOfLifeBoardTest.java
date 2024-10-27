@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.team1.GameOfLifeBoard;
 import org.team1.GameOfLifeSimulator;
 import org.team1.PlainGameOfLifeSimulator;
+import org.team1.GameOfLifeCell;
 
 import java.util.Arrays;
 
@@ -12,11 +13,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GameOfLifeBoardTest {
     private GameOfLifeBoard gameOfLifeBoard;
+    private GameOfLifeBoard gameOfLifeBoardSmall;
     private final GameOfLifeSimulator gameOfLifeSimulator = new PlainGameOfLifeSimulator();
 
     @BeforeEach
     void createGameOfLifeBoard() throws Exception {
          gameOfLifeBoard = new GameOfLifeBoard(8, 8, gameOfLifeSimulator);
+         gameOfLifeBoardSmall = new GameOfLifeBoard(3, 3, gameOfLifeSimulator);
     }
 
     // Martwa komórka mająca dokładnie trzech żywych sąsiadów staje się żywa w następnym kroku
@@ -83,5 +86,74 @@ class GameOfLifeBoardTest {
         Assertions.assertThrows(Exception.class, () -> new GameOfLifeBoard(-1, 1, gameOfLifeSimulator));
 
         Assertions.assertThrows(Exception.class, () -> new GameOfLifeBoard(1, -1, gameOfLifeSimulator));
+    }
+
+    @Test
+    void getRowTest() {
+        gameOfLifeBoardSmall.fillFalse();
+        gameOfLifeBoardSmall.set(0, 0, true);
+        gameOfLifeBoardSmall.set(0, 1, true);
+        gameOfLifeBoardSmall.set(0, 2, true);
+        gameOfLifeBoardSmall.set(2, 0, true);
+        gameOfLifeBoardSmall.set(2, 1, true);
+        gameOfLifeBoardSmall.set(2, 2, true);
+
+        GameOfLifeCell[] expectedCells = {new GameOfLifeCell(true), new GameOfLifeCell(true), new GameOfLifeCell(true)};
+        GameOfLifeCell[] actualCells = gameOfLifeBoardSmall.getRow(0).getLine();
+
+        boolean areEqual = true;
+        for (int i = 0; i < expectedCells.length; i++) {
+            if (expectedCells[i].getValue() != actualCells[i].getValue()) {
+                areEqual = false;
+                break;
+            }
+        }
+        assertTrue(areEqual);
+
+    }
+
+    @Test
+    void getColumnTest() {
+        gameOfLifeBoardSmall.fillFalse();
+        gameOfLifeBoardSmall.set(0, 0, true);
+        gameOfLifeBoardSmall.set(1, 0, true);
+        gameOfLifeBoardSmall.set(2, 0, true);
+        gameOfLifeBoardSmall.set(0, 2, true);
+        gameOfLifeBoardSmall.set(1, 2, true);
+        gameOfLifeBoardSmall.set(2, 2, true);
+
+        GameOfLifeCell[] expectedCells = {new GameOfLifeCell(true), new GameOfLifeCell(true), new GameOfLifeCell(true)};
+        GameOfLifeCell[] actualCells = gameOfLifeBoardSmall.getColumn(2).getLine();
+
+        boolean areEqual = true;
+        for (int i = 0; i < expectedCells.length; i++) {
+            if (expectedCells[i].getValue() != actualCells[i].getValue()) {
+                areEqual = false;
+                break;
+            }
+        }
+        assertTrue(areEqual);
+    }
+
+    @Test
+    void countDeadCellsTest() {
+        gameOfLifeBoardSmall.fillFalse();
+        gameOfLifeBoardSmall.set(0, 0, true);
+        gameOfLifeBoardSmall.set(2, 0, true);
+        int expectedDeadCells = 2;
+        int actualDeadCells = gameOfLifeBoardSmall.getRow(0).countDeadCells();
+
+        assertTrue(expectedDeadCells == actualDeadCells);
+    }
+
+    @Test
+    void countAliveCellsTest() {
+        gameOfLifeBoardSmall.fillFalse();
+        gameOfLifeBoardSmall.set(0, 0, true);
+        gameOfLifeBoardSmall.set(1, 0, true);
+        int expectedAliveCells = 2;
+        int actualAliveCells = gameOfLifeBoardSmall.getColumn(0).countAliveCells();
+
+        assertTrue(expectedAliveCells == actualAliveCells);
     }
 }

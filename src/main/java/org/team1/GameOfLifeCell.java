@@ -4,7 +4,7 @@ public class GameOfLifeCell {
     private boolean value;
     private GameOfLifeCell[] neighbors;
 
-    GameOfLifeCell(boolean value) {
+    public GameOfLifeCell(boolean value) {
         this.value = value;
     }
 
@@ -13,7 +13,7 @@ public class GameOfLifeCell {
     }
 
     // Jak nic nie ma to dostęp jest domyślny, czyli tylko w pakiecie
-    boolean getValue() {
+    public boolean getValue() {
         return value;
     }
 
