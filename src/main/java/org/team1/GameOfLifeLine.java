@@ -1,11 +1,38 @@
 package org.team1;
 
-public abstract class GameOfLifeLine {
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
+public abstract class GameOfLifeLine implements PropertyChangeListener {
+
+    private int aliveCount = 0;
+    private int deadCount = 0;
     protected GameOfLifeCell[] line;
 
     public GameOfLifeLine(GameOfLifeCell[] line) {
         this.line = line;
+        for (GameOfLifeCell cell : line) {
+            cell.addPropertyChangeListener(this);
+            if (cell.getValue()) {
+                aliveCount++;
+            } else {
+                deadCount++;
+            }
+        }
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if ("cell".equals(evt.getPropertyName())) {
+            boolean newState = (boolean) evt.getNewValue();
+            if (newState) {
+                aliveCount++;
+                deadCount--;
+            } else {
+                aliveCount--;
+                deadCount++;
+            }
+        }
     }
 
     public GameOfLifeCell[] getLine() {
@@ -13,16 +40,10 @@ public abstract class GameOfLifeLine {
     }
 
     public int countAliveCells() {
-        int aliveCells = 0;
-        for (GameOfLifeCell cell : this.line) {
-            if (cell.getValue()) {
-                aliveCells++;
-            }
-        }
-        return aliveCells;
+        return aliveCount;
     }
 
     public int countDeadCells() {
-        return this.line.length - countAliveCells();
+        return deadCount;
     }
 }

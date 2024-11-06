@@ -1,11 +1,20 @@
 package org.team1;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
 public class GameOfLifeCell {
     private boolean value;
     private GameOfLifeCell[] neighbors;
+    private final PropertyChangeSupport support;
 
     public GameOfLifeCell(boolean value) {
         this.value = value;
+        this.support = new PropertyChangeSupport(this);
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        support.addPropertyChangeListener(listener);
     }
 
     void setNeighbors(GameOfLifeCell[] newNeighbors) {
@@ -32,7 +41,9 @@ public class GameOfLifeCell {
     }
 
     void updateState(boolean newState) {
+        boolean oldState = value;
         value = newState;
+        support.firePropertyChange("cell", oldState, newState);
     }
 
 }

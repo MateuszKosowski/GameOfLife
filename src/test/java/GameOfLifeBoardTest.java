@@ -1,15 +1,12 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.team1.GameOfLifeBoard;
-import org.team1.GameOfLifeSimulator;
-import org.team1.PlainGameOfLifeSimulator;
-import org.team1.GameOfLifeCell;
+import org.team1.*;
 
+import java.beans.PropertyChangeEvent;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class GameOfLifeBoardTest {
     private GameOfLifeBoard gameOfLifeBoard;
@@ -136,6 +133,48 @@ class GameOfLifeBoardTest {
     }
 
     @Test
+    void shouldUpdateRowAliveAndDeadCells() {
+        gameOfLifeBoardSmall.fillFalse();
+        int aliveCells = gameOfLifeBoardSmall.getRow(0).countAliveCells();
+        int deadCells = gameOfLifeBoardSmall.getRow(0).countDeadCells();
+        assertEquals(0, aliveCells);
+        assertEquals(3, deadCells);
+        gameOfLifeBoardSmall.set(0, 1, true);
+        aliveCells = gameOfLifeBoardSmall.getRow(0).countAliveCells();
+        deadCells = gameOfLifeBoardSmall.getRow(0).countDeadCells();
+        assertEquals(1, aliveCells);
+        assertEquals(2, deadCells);
+    }
+
+    @Test
+    void shouldUpdateColumnAliveAndDeadCells() {
+        gameOfLifeBoardSmall.fillFalse();
+        int aliveCells = gameOfLifeBoardSmall.getColumn(1).countAliveCells();
+        int deadCells = gameOfLifeBoardSmall.getColumn(1).countDeadCells();
+        assertEquals(0, aliveCells);
+        assertEquals(3, deadCells);
+        gameOfLifeBoardSmall.set(1, 0, true);
+        gameOfLifeBoardSmall.set(1, 1, true);
+        aliveCells = gameOfLifeBoardSmall.getRow(1).countAliveCells();
+        deadCells = gameOfLifeBoardSmall.getRow(1).countDeadCells();
+        assertEquals(2, aliveCells);
+        assertEquals(1, deadCells);
+    }
+
+    @Test
+    void shouldNotUpdateRow_WrongPropertyName() {
+        gameOfLifeBoardSmall.fillFalse();
+        PropertyChangeEvent event = new PropertyChangeEvent(this, "noCell", false, true);
+
+        GameOfLifeRow row = gameOfLifeBoardSmall.getRow(0);
+
+        row.propertyChange(event);
+
+        assertEquals(0, row.countAliveCells());
+        assertEquals(3, row.countDeadCells());
+    }
+
+    @Test
     void countDeadCellsTest() {
         gameOfLifeBoardSmall.fillFalse();
         gameOfLifeBoardSmall.set(0, 0, true);
@@ -143,7 +182,7 @@ class GameOfLifeBoardTest {
         int expectedDeadCells = 2;
         int actualDeadCells = gameOfLifeBoardSmall.getRow(0).countDeadCells();
 
-        assertTrue(expectedDeadCells == actualDeadCells);
+        assertEquals(expectedDeadCells, actualDeadCells);
     }
 
     @Test
@@ -154,6 +193,6 @@ class GameOfLifeBoardTest {
         int expectedAliveCells = 2;
         int actualAliveCells = gameOfLifeBoardSmall.getColumn(0).countAliveCells();
 
-        assertTrue(expectedAliveCells == actualAliveCells);
+        assertEquals(expectedAliveCells, actualAliveCells);
     }
 }
