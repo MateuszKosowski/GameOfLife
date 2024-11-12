@@ -1,5 +1,7 @@
 package org.team1;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
@@ -101,7 +103,7 @@ public class GameOfLifeBoard {
 
     // Każdy obiekt Cell ma 8 sąsiadów, więc przypisujemy sąsiadów dla każdego Cell
     public void assignNeighborsToCell(int x, int y) {
-        GameOfLifeCell[] neighbors = new GameOfLifeCell[8];
+        List<GameOfLifeCell> neighbors = Arrays.asList(new GameOfLifeCell[8]);
         int index = 0;
         for (int i = x - 1; i <= x + 1; i++) {
             for (int j = y - 1; j <= y + 1; j++) {
@@ -122,7 +124,7 @@ public class GameOfLifeBoard {
                 }
 
                 if (tempI != x || tempJ != y) {
-                    neighbors[index] = board[tempI][tempJ];
+                    neighbors.set(index, board[tempI][tempJ]);
                     index++;
                 }
             }
