@@ -17,7 +17,7 @@ public class GameOfLifeCell {
         support.addPropertyChangeListener(listener);
     }
 
-    void setNeighbors(GameOfLifeCell[] newNeighbors) {
+    public void setNeighbors(GameOfLifeCell[] newNeighbors) {
         this.neighbors = newNeighbors;
     }
 
@@ -26,7 +26,7 @@ public class GameOfLifeCell {
         return value;
     }
 
-    boolean nextState() {
+    public boolean nextState() {
         int aliveNeighbors = 0;
         for (GameOfLifeCell neighbor : neighbors) {
             if (neighbor.getValue()) {
@@ -40,7 +40,7 @@ public class GameOfLifeCell {
         }
     }
 
-    void updateState(boolean newState) {
+    public void updateState(boolean newState) {
         boolean oldState = value;
         value = newState;
         support.firePropertyChange("cell", oldState, newState);
