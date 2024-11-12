@@ -2,14 +2,15 @@ package org.team1;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 
 public abstract class GameOfLifeLine implements PropertyChangeListener {
 
     private int aliveCount = 0;
     private int deadCount = 0;
-    protected GameOfLifeCell[] line;
+    protected List<GameOfLifeCell> line;
 
-    public GameOfLifeLine(GameOfLifeCell[] line) {
+    public GameOfLifeLine(List<GameOfLifeCell> line) {
         this.line = line;
         for (GameOfLifeCell cell : line) {
             cell.addPropertyChangeListener(this);
@@ -35,7 +36,7 @@ public abstract class GameOfLifeLine implements PropertyChangeListener {
         }
     }
 
-    public GameOfLifeCell[] getLine() {
+    public List<GameOfLifeCell> getLine() {
         return this.line;
     }
 

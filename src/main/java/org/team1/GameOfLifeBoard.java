@@ -9,8 +9,6 @@ public class GameOfLifeBoard {
 
     private final GameOfLifeCell[][] board;
     private final GameOfLifeSimulator gameOfLifeSimulator;
-    private final GameOfLifeRow[] rows;
-    private final GameOfLifeColumn[] columns;
 
     // Konstruktor, który tworzy planszę o podanych wymiarach i przypisuje obiekt GameOfLifeSimulator
     public GameOfLifeBoard(int width, int height, GameOfLifeSimulator gameOfLifeSimulator) throws Exception {
@@ -19,11 +17,8 @@ public class GameOfLifeBoard {
         }
         this.gameOfLifeSimulator = Objects.requireNonNullElseGet(gameOfLifeSimulator, PlainGameOfLifeSimulator::new);
         this.board = new GameOfLifeCell[width][height];
-        this.rows = new GameOfLifeRow[height];
-        this.columns = new GameOfLifeColumn[width];
 
         fillBoard();
-        assignRowsAndCols();
     }
 
     // Zwracamy kopię naszej planszy
@@ -80,27 +75,6 @@ public class GameOfLifeBoard {
         }
     }
 
-    private void assignRowsAndCols() {
-        GameOfLifeCell[] row;
-        GameOfLifeCell[] col;
-        int i;
-        int j;
-        for (i = 0; i < board.length; i++) {
-            row = new GameOfLifeCell[board[0].length];
-            for (j = 0; j < board[0].length; j++) {
-                row[j] = board[i][j];
-            }
-            rows[i] = new GameOfLifeRow(row);
-        }
-        for (i = 0; i < board[0].length; i++) {
-            col = new GameOfLifeCell[board.length];
-            for (j = 0; j < board.length; j++) {
-                col[j] = board[j][i];
-            }
-            columns[i] = new GameOfLifeColumn(col);
-        }
-    }
-
     // Każdy obiekt Cell ma 8 sąsiadów, więc przypisujemy sąsiadów dla każdego Cell
     public void assignNeighborsToCell(int x, int y) {
         List<GameOfLifeCell> neighbors = Arrays.asList(new GameOfLifeCell[8]);
@@ -134,12 +108,20 @@ public class GameOfLifeBoard {
 
     // Zwracamy wiersz planszy na podstawie indeksu jako obiekt GameOfLifeRow
     public GameOfLifeRow getRow(int index) {
-        return rows[index];
+        List<GameOfLifeCell> row = Arrays.asList(new GameOfLifeCell[board[0].length]);
+        for (int i = 0; i < board[0].length; i++) {
+            row.set(i, board[index][i]);
+        }
+        return new GameOfLifeRow(row);
     }
 
     // Zwracamy kolumnę planszy na podstawie indeksu jako obiekt GameOfLifeColumn
     public GameOfLifeColumn getColumn(int index) {
-        return columns[index];
+        List<GameOfLifeCell> column = Arrays.asList(new GameOfLifeCell[board.length]);
+        for (int i = 0; i < board.length; i++) {
+            column.set(i, board[i][index]);
+        }
+        return new GameOfLifeColumn(column);
     }
 
 }
