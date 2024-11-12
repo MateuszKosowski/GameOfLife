@@ -93,10 +93,6 @@
                 <version>2.4.0</version>
 
                 <configuration>
-                    <verbose>false</verbose>
-                    <includes>
-                        <include>**/*.java</include>
-                    </includes>
                     <licenseName>apache_v2</licenseName>
                     <inceptionYear>2024</inceptionYear>
                     <organizationName>Zespol1</organizationName>
@@ -111,6 +107,20 @@
                             <goal>aggregate-add-third-party</goal>
                         </goals>
                         <phase>process-sources</phase>
+                    </execution>
+                    <execution>
+                        <id>first</id>
+                        <goals>
+                            <goal>update-file-header</goal>
+                        </goals>
+                        <phase>process-sources</phase>
+                        <configuration>
+                            <licenseName>apache_v2</licenseName>
+                            <roots>
+                                <root>src/main/java</root>
+                                <root>src/test</root>
+                            </roots>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
