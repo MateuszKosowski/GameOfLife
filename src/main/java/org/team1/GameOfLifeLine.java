@@ -7,7 +7,6 @@ import java.util.List;
 public abstract class GameOfLifeLine implements PropertyChangeListener {
 
     private int aliveCount = 0;
-    private int deadCount = 0;
     protected List<GameOfLifeCell> line;
 
     public GameOfLifeLine(List<GameOfLifeCell> line) {
@@ -16,22 +15,18 @@ public abstract class GameOfLifeLine implements PropertyChangeListener {
             cell.addPropertyChangeListener(this);
             if (cell.getValue()) {
                 aliveCount++;
-            } else {
-                deadCount++;
             }
         }
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if ("cell".equals(evt.getPropertyName())) {
+        if ("value".equals(evt.getPropertyName())) {
             boolean newState = (boolean) evt.getNewValue();
             if (newState) {
                 aliveCount++;
-                deadCount--;
             } else {
                 aliveCount--;
-                deadCount++;
             }
         }
     }
@@ -45,6 +40,6 @@ public abstract class GameOfLifeLine implements PropertyChangeListener {
     }
 
     public int countDeadCells() {
-        return deadCount;
+        return line.size() - aliveCount;
     }
 }

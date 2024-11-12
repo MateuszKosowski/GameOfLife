@@ -5,6 +5,7 @@ import org.team1.*;
 
 import java.beans.PropertyChangeEvent;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -96,11 +97,12 @@ class GameOfLifeBoardTest {
         gameOfLifeBoardSmall.set(2, 2, true);
 
         GameOfLifeCell[] expectedCells = {new GameOfLifeCell(true), new GameOfLifeCell(true), new GameOfLifeCell(true)};
-        GameOfLifeCell[] actualCells = gameOfLifeBoardSmall.getRow(0).getLine();
+        List<GameOfLifeCell> expectedList = Arrays.asList(expectedCells);
+        List<GameOfLifeCell> actualCells = gameOfLifeBoardSmall.getRow(0).getLine();
 
         boolean areEqual = true;
         for (int i = 0; i < expectedCells.length; i++) {
-            if (expectedCells[i].getValue() != actualCells[i].getValue()) {
+            if (expectedList.get(i).getValue() != actualCells.get(i).getValue()) {
                 areEqual = false;
                 break;
             }
@@ -120,11 +122,12 @@ class GameOfLifeBoardTest {
         gameOfLifeBoardSmall.set(2, 2, true);
 
         GameOfLifeCell[] expectedCells = {new GameOfLifeCell(true), new GameOfLifeCell(true), new GameOfLifeCell(true)};
-        GameOfLifeCell[] actualCells = gameOfLifeBoardSmall.getColumn(2).getLine();
+        List<GameOfLifeCell> expectedList = Arrays.asList(expectedCells);
+        List<GameOfLifeCell> actualCells = gameOfLifeBoardSmall.getColumn(2).getLine();
 
         boolean areEqual = true;
         for (int i = 0; i < expectedCells.length; i++) {
-            if (expectedCells[i].getValue() != actualCells[i].getValue()) {
+            if (expectedList.get(i).getValue() != actualCells.get(i).getValue()) {
                 areEqual = false;
                 break;
             }
