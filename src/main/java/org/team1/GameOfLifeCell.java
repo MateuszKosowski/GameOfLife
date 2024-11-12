@@ -5,6 +5,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.Arrays;
 import java.util.List;
 
+
 public class GameOfLifeCell {
     private boolean value;
     // Stała referencja do listy sąsiadów, ale wartości w liście mogą się zmieniać
@@ -50,6 +51,11 @@ public class GameOfLifeCell {
         boolean oldState = value;
         value = newState;
         support.firePropertyChange("value", oldState, newState);
+    }
+
+    // Getter dla listy sąsiadów
+    public List<GameOfLifeCell> getNeighbors() {
+        return neighbors;
     }
 
 }
