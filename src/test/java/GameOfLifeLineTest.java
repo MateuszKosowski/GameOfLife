@@ -27,6 +27,8 @@ import org.team1.GameOfLifeRow;
 import java.beans.PropertyChangeEvent;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class GameOfLifeLineTest {
     GameOfLifeLine line;
     GameOfLifeLine line1;
@@ -45,28 +47,28 @@ public class GameOfLifeLineTest {
     void getLineTest() {
         List<GameOfLifeCell> lineList = line.getLine();
         List<GameOfLifeCell> lineList1 = line1.getLine();
-        assert(lineList.size() == 3);
-        assert(lineList1.size() == 3);
+        assertEquals(3, lineList.size());
+        assertEquals(3, lineList1.size());
     }
 
     @Test
     void countAliveCellsTest() {
-        assert(line.countAliveCells() == 1);
-        assert(line1.countAliveCells() == 2);
+        assertEquals(1, line.countAliveCells());
+        assertEquals(2, line1.countAliveCells());
     }
 
     @Test
     void countDeadCellsTest() {
-        assert(line.countDeadCells() == 2);
-        assert(line1.countDeadCells() == 1);
+        assertEquals(2, line.countDeadCells());
+        assertEquals(1, line1.countDeadCells());
     }
 
     @Test
     void propertyChangeTest() {
         line.propertyChange(new PropertyChangeEvent(this, "value", false, true));
-        assert(line.countAliveCells() == 2);
+        assertEquals(2, line.countAliveCells());
         line.propertyChange(new PropertyChangeEvent(this, "value", true, false));
-        assert(line.countAliveCells() == 1);
+        assertEquals(1, line.countAliveCells());
     }
 
 }
