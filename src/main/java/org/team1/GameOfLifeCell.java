@@ -100,4 +100,17 @@ public class GameOfLifeCell {
         return Objects.hashCode(value, neighbors);
     }
 
+    // Nadpisanie metody equals(), aby porównywać obiekty na podstawie wartości i listy sąsiadów
+    @Override
+    public boolean equals(Object obj) {
+        // obj instanceof GameOfLifeCell sprawdza czy obj jest instancją klasy GameOfLifeCell
+        if (obj instanceof GameOfLifeCell) {
+            // Rzutuje obj typu Object na typ GameOfLifeCell
+            GameOfLifeCell other = (GameOfLifeCell) obj;
+            // Porównuje wartości i listy sąsiadów
+            return Objects.equal(value, other.value) && Objects.equal(neighbors, other.neighbors);
+        }
+        return false;
+    }
+
 }
