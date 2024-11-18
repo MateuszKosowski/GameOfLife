@@ -32,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class GameOfLifeLineTest {
     GameOfLifeLine line;
     GameOfLifeLine line1;
+    GameOfLifeLine line2;
 
     @BeforeEach
     void createGameOfLifeLine() {
@@ -104,4 +105,9 @@ public class GameOfLifeLineTest {
         assertFalse(output);
     }
 
+    @Test
+    public void equalsTest3(){
+        boolean output = line.equals(null);
+        assertFalse(output);
+    }
 }

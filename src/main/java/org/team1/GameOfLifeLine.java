@@ -83,7 +83,7 @@ public abstract class GameOfLifeLine implements PropertyChangeListener {
     @Override
     public String toString() {
         String lineString = line.stream()
-                .map(line -> line != null ? String.valueOf(line.getValue()) : "null")
+                .map(cell -> String.valueOf(cell.getValue()))
                 .toList()
                 .toString();
 
@@ -102,7 +102,7 @@ public abstract class GameOfLifeLine implements PropertyChangeListener {
     public boolean equals(Object obj) {
         if (obj instanceof GameOfLifeLine) {
             GameOfLifeLine that = (GameOfLifeLine) obj;
-            return Objects.equal(this.aliveCount, that.aliveCount) && Objects.equal(this.line, that.line);
+            return Objects.equal(this.line, that.line);
         }
         return false;
     }
