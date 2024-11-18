@@ -82,9 +82,14 @@ public abstract class GameOfLifeLine implements PropertyChangeListener {
 
     @Override
     public String toString() {
+        String lineString = line.stream()
+                .map(line -> line != null ? String.valueOf(line.getValue()) : "null")
+                .toList()
+                .toString();
+
         return MoreObjects.toStringHelper(this)
-                .add("Liczba zywych komorek: ", aliveCount)
-                .add("Zawartosc lini: ", line)
+                .add("Liczba zywych komorek", aliveCount)
+                .add("Zawartosc lini", lineString)
                 .toString();
     }
 

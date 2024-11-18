@@ -71,4 +71,37 @@ public class GameOfLifeLineTest {
         assertEquals(1, line.countAliveCells());
     }
 
+    @Test
+    public void toStringTest(){
+        String output = line.toString();
+        String expected = "GameOfLifeRow{Liczba zywych komorek=1, Zawartosc lini=[false, true, false]}";
+        assertEquals(expected, output);
+    }
+
+    @Test
+    public void hashCodeTest(){
+        int output1 = line.hashCode();
+        int output2 = line.hashCode();
+        assertEquals(output1, output2);
+    }
+
+    @Test
+    public void hashCodeTest2(){
+        int output1 = line.hashCode();
+        int output2 = line1.hashCode();
+        assertNotEquals(output1, output2);
+    }
+
+    @Test
+    public void equalsTest(){
+        boolean output = line.equals(line);
+        assertTrue(output);
+    }
+
+    @Test
+    public void equalsTest2(){
+        boolean output = line.equals(line1);
+        assertFalse(output);
+    }
+
 }
