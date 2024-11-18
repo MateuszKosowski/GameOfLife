@@ -20,7 +20,6 @@
 
 package org.team1;
 
-import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
 import java.util.Arrays;
@@ -149,14 +148,33 @@ public class GameOfLifeBoard {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("Plansza: ", board)
-                .toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append("Plansza:\n");
+        for (GameOfLifeCell[] row : board) {
+            for (GameOfLifeCell cell : row) {
+                sb.append(cell.getValue() ? "1" : "0").append(" ");
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return Arrays.deepHashCode(board);
+        int result = 2137;
+        result = 31 * result + System.identityHashCode(board);
+        result = 31 * result + calculateBoardHashCode();
+        return result;
+    }
+
+    private int calculateBoardHashCode() {
+        int result = 420;
+        for (GameOfLifeCell[] gameOfLifeCells : board) {
+            for (int j = 0; j < board[0].length; j++) {
+                result = 31 * result + (gameOfLifeCells[j].getValue() ? 1 : 0);
+            }
+        }
+        return result;
     }
 
     @Override

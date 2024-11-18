@@ -217,4 +217,49 @@ class GameOfLifeBoardTest {
 
         assertEquals(expectedAliveCells, actualAliveCells);
     }
+
+    @Test
+    void toStringTest() {
+        gameOfLifeBoardSmall.fillFalse();
+        gameOfLifeBoardSmall.set(0, 0, true);
+        gameOfLifeBoardSmall.set(1, 0, true);
+        gameOfLifeBoardSmall.set(2, 0, true);
+        String expectedString = "Plansza:\n1 0 0 \n1 0 0 \n1 0 0 \n";
+        String actualString = gameOfLifeBoardSmall.toString();
+
+        assertEquals(expectedString, actualString);
+    }
+
+    @Test
+    void equalsTest() throws Exception {
+        gameOfLifeBoardSmall.fillFalse();
+        gameOfLifeBoardSmall.set(0, 0, true);
+        gameOfLifeBoardSmall.set(1, 0, true);
+        gameOfLifeBoardSmall.set(2, 0, true);
+
+        GameOfLifeBoard gameOfLifeBoardSmall2 = new GameOfLifeBoard(3, 3, gameOfLifeSimulator);
+        gameOfLifeBoardSmall2.fillFalse();
+        gameOfLifeBoardSmall2.set(0, 0, true);
+        gameOfLifeBoardSmall2.set(1, 0, true);
+        gameOfLifeBoardSmall2.set(2, 0, true);
+
+        assertNotEquals(gameOfLifeBoardSmall, gameOfLifeBoardSmall2);
+
+        assertNotEquals(gameOfLifeBoardSmall, new Object());
+    }
+
+    @Test
+    void hashCodeTest() {
+        gameOfLifeBoardSmall.fillFalse();
+        gameOfLifeBoardSmall.set(0, 0, true);
+        gameOfLifeBoardSmall.set(1, 0, true);
+        gameOfLifeBoardSmall.set(2, 0, true);
+
+        int expectedHashCode = gameOfLifeBoardSmall.hashCode();
+
+        assertEquals(expectedHashCode, gameOfLifeBoardSmall.hashCode());
+
+        gameOfLifeBoardSmall.set(2, 0, false);
+        assertNotEquals(expectedHashCode, gameOfLifeBoardSmall.hashCode());
+    }
 }
