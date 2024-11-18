@@ -116,4 +116,46 @@ public class GameOfLifeCellTest {
         Cell.setNeighbors(exampleNeighbors);
         assertTrue(Cell.nextState());
     }
+
+    @Test
+    void hashCodeTest(){
+        Cell.setNeighbors(exampleNeighbors);
+        int output = Cell.hashCode();
+        int expectedOutput = Cell.hashCode();
+        assertEquals(output, expectedOutput);
+    }
+
+    @Test
+    void hashCodeTest2(){
+        Cell.setNeighbors(exampleNeighbors);
+        int output = Cell.hashCode();
+        Cell.updateState(false);
+        int expectedOutput = Cell.hashCode();
+        assertNotEquals(output, expectedOutput);
+    }
+
+    @Test
+    void equalsTest(){
+        Cell.setNeighbors(exampleNeighbors);
+        GameOfLifeCell Cell2 = new GameOfLifeCell(true);
+        Cell2.setNeighbors(exampleNeighbors);
+        assertTrue(Cell.equals(Cell2));
+    }
+
+    @Test
+    void equalsTest2(){
+        Cell.setNeighbors(exampleNeighbors);
+        GameOfLifeCell Cell2 = new GameOfLifeCell(true);
+        Cell2.setNeighbors(exampleNeighbors);
+        Cell2.updateState(false);
+        assertFalse(Cell.equals(Cell2));
+    }
+
+    @Test
+    void toStringTest(){
+        Cell.setNeighbors(exampleNeighbors);
+        String output = Cell.toString();
+        String expectedOutput = "GameOfLifeCell{Stan komorki=true, Lista sasiadow=[false, false, false, false, false, false, false, false]}";
+        assertEquals(output, expectedOutput);
+    }
 }

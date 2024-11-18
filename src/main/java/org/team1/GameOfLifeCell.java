@@ -89,9 +89,16 @@ public class GameOfLifeCell {
     // Nadpisanie metody toString()
     @Override
     public String toString() {
+        // Tworzymy reprezentację sąsiadów, wypisując tylko ich stan (value)
+        String neighborsString = neighbors.stream()
+                .map(neighbor -> neighbor != null ? String.valueOf(neighbor.value) : "null")
+                .toList()
+                .toString();
+
+        // Główna reprezentacja toString()
         return MoreObjects.toStringHelper(this)
-                .add("Stan komorki: ", value)
-                .add("\nLista sasiadow: ", neighbors)
+                .add("Stan komorki", value)
+                .add("Lista sasiadow", neighborsString)
                 .toString();
 
     }
