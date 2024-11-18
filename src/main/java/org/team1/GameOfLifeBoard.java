@@ -156,7 +156,7 @@ public class GameOfLifeBoard {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode((Object) board);
+        return Arrays.deepHashCode(board);
     }
 
     @Override
