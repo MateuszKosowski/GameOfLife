@@ -25,6 +25,7 @@
  * limitations under the License.
  * #L%
  */
+
 package org.team1;
 
 import com.google.common.base.MoreObjects;
@@ -81,14 +82,17 @@ public abstract class GameOfLifeLine implements PropertyChangeListener {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("Liczba zywych komorek: ", aliveCount).add("Zawartosc lini: ", line).toString();
+        return MoreObjects.toStringHelper(this)
+                .add("Liczba zywych komorek: ", aliveCount)
+                .add("Zawartosc lini: ", line)
+                .toString();
     }
 
     @Override
     public int hashCode() {
         return Objects.hashCode(aliveCount, line);
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof GameOfLifeLine) {

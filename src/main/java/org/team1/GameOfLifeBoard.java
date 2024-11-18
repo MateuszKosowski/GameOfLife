@@ -1,5 +1,3 @@
-package org.team1;
-
 /*-
  * #%L
  * GameOfLife
@@ -20,9 +18,13 @@ package org.team1;
  * #L%
  */
 
+package org.team1;
+
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
+
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 public class GameOfLifeBoard {
@@ -35,7 +37,8 @@ public class GameOfLifeBoard {
         if (width < 0 || height < 0) {
             throw new Exception("Width or height is negative number");
         }
-        this.gameOfLifeSimulator = Objects.requireNonNullElseGet(gameOfLifeSimulator, PlainGameOfLifeSimulator::new);
+        this.gameOfLifeSimulator = java.util.Objects
+            .requireNonNullElseGet(gameOfLifeSimulator, PlainGameOfLifeSimulator::new);
         this.board = new GameOfLifeCell[width][height];
 
         fillBoard();
@@ -142,6 +145,26 @@ public class GameOfLifeBoard {
             column.set(i, board[i][index]);
         }
         return new GameOfLifeColumn(column);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("Plansza: ", board)
+                .toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode((Object) board);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof GameOfLifeBoard) {
+            return Objects.equal(this.board, ((GameOfLifeBoard) obj).board);
+        }
+        return false;
     }
 
 }

@@ -89,14 +89,18 @@ public class GameOfLifeCell {
     // Nadpisanie metody toString()
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("Stan komorki: ", value).add("\nLista sasiadow: ", neighbors).toString();
+        return MoreObjects.toStringHelper(this)
+                .add("Stan komorki: ", value)
+                .add("\nLista sasiadow: ", neighbors)
+                .toString();
 
     }
-    // Nadpisanie metody hashCode(), aby porównywać obiekty na podstawie wartości i listy sąsiadów
 
+    // Nadpisanie metody hashCode(), aby porównywać obiekty na podstawie wartości i listy sąsiadów
     @Override
     public int hashCode() {
-        // Metoda hashCode() służy w Javie do zwrócenia (w miarę) unikalnej wartości liczbowej typu int dla każdego unikalnego obiektu.
+        // Metoda hashCode() służy w Javie do zwrócenia (w miarę) unikalnej wartości liczbowej
+        // typu int dla każdego unikalnego obiektu.
         return Objects.hashCode(value, neighbors);
     }
 
