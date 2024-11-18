@@ -1,5 +1,3 @@
-package org.team1;
-
 /*-
 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,6 +25,10 @@ package org.team1;
  * limitations under the License.
  * #L%
  */
+package org.team1;
+
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -37,6 +39,7 @@ public abstract class GameOfLifeLine implements PropertyChangeListener {
     private int aliveCount = 0;
     protected List<GameOfLifeCell> line;
 
+    // Konstruktor
     public GameOfLifeLine(List<GameOfLifeCell> line) {
         this.line = line;
         for (GameOfLifeCell cell : line) {
@@ -47,6 +50,12 @@ public abstract class GameOfLifeLine implements PropertyChangeListener {
         }
     }
 
+    // Getter dla linii
+    public List<GameOfLifeCell> getLine() {
+        return this.line;
+    }
+
+    // Metoda aktualizująca liczbę żywych komórek, jeśli któraś zmieniła swoją wartość
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if ("value".equals(evt.getPropertyName())) {
@@ -59,15 +68,33 @@ public abstract class GameOfLifeLine implements PropertyChangeListener {
         }
     }
 
-    public List<GameOfLifeCell> getLine() {
-        return this.line;
-    }
 
+    // Metoda zwracająca liczbę żywych komórek
     public int countAliveCells() {
         return aliveCount;
     }
 
+    // Metoda zwracająca liczbę martwych komórek
     public int countDeadCells() {
         return line.size() - aliveCount;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this).add("Liczba zywych komorek: ", aliveCount).add("Zawartosc lini: ", line).toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(aliveCount, line);
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof GameOfLifeLine) {
+            GameOfLifeLine that = (GameOfLifeLine) obj;
+            return Objects.equal(this.aliveCount, that.aliveCount) && Objects.equal(this.line, that.line);
+        }
+        return false;
     }
 }

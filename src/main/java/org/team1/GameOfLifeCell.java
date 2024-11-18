@@ -107,7 +107,7 @@ public class GameOfLifeCell {
         if (obj instanceof GameOfLifeCell) {
             // Rzutuje obj typu Object na typ GameOfLifeCell
             GameOfLifeCell other = (GameOfLifeCell) obj;
-            // Porównuje wartości i listy sąsiadów
+            // Porównuje wartości i listy sąsiadów, zwraca true jeśli są równe, w przeciwnym wypadku false
             return Objects.equal(value, other.value) && Objects.equal(neighbors, other.neighbors);
         }
         return false;
