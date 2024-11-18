@@ -152,10 +152,35 @@ public class GameOfLifeCellTest {
     }
 
     @Test
+    void equalsTest3(){
+        Cell.setNeighbors(exampleNeighbors);
+        GameOfLifeCell Cell2 = new GameOfLifeCell(true);
+        exampleNeighbors.set(0, new GameOfLifeCell(true));
+        Cell2.setNeighbors(exampleNeighbors);
+        assertFalse(Cell.equals(Cell2));
+    }
+
+    @Test
+    void equalsTest4(){
+        Cell.setNeighbors(exampleNeighbors);
+        assertFalse(Cell.equals(new Object()));
+    }
+
+    @Test
     void toStringTest(){
         Cell.setNeighbors(exampleNeighbors);
         String output = Cell.toString();
         String expectedOutput = "GameOfLifeCell{Stan komorki=true, Lista sasiadow=[false, false, false, false, false, false, false, false]}";
         assertEquals(output, expectedOutput);
     }
+
+    @Test
+    void toStringTest2(){
+        exampleNeighbors.set(0, null);
+        Cell.setNeighbors(exampleNeighbors);
+        String output = Cell.toString();
+        String expectedOutput = "GameOfLifeCell{Stan komorki=true, Lista sasiadow=[null, false, false, false, false, false, false, false]}";
+        assertEquals(output, expectedOutput);
+    }
+
 }
