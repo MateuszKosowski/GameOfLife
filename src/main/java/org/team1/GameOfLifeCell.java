@@ -1,5 +1,3 @@
-package org.team1;
-
 /*-
  * #%L
  * GameOfLife
@@ -20,10 +18,16 @@ package org.team1;
  * #L%
  */
 
+package org.team1;
+
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Arrays;
 import java.util.List;
+
 
 
 public class GameOfLifeCell {
@@ -38,21 +42,29 @@ public class GameOfLifeCell {
         this.support = new PropertyChangeSupport(this);
     }
 
+    // Getter dla listy sąsiadów
+    public List<GameOfLifeCell> getNeighbors() {
+        return neighbors;
+    }
+
+    // Getter dla wartości
+    public boolean getValue() {
+        return value;
+    }
+
     // Metoda do dodawania listenerów do naszego obiektu Cell
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);
     }
 
+    // Metoda do przypisania sąsiadów
     public void setNeighbors(List<GameOfLifeCell> newNeighbors) {
         for (int i = 0; i < newNeighbors.size(); i++) {
             neighbors.set(i, newNeighbors.get(i));
         }
     }
 
-    public boolean getValue() {
-        return value;
-    }
-
+    // Obliczanie następnego stanu komórki na podstawie liczby żywych sąsiadów
     public boolean nextState() {
         int aliveNeighbors = 0;
         for (GameOfLifeCell neighbor : neighbors) {
@@ -67,15 +79,25 @@ public class GameOfLifeCell {
         }
     }
 
+    // Metoda do aktualizacji stanu komórki, powiadamiająca listenerów o zmianie
     public void updateState(boolean newState) {
         boolean oldState = value;
         value = newState;
         support.firePropertyChange("value", oldState, newState);
     }
 
-    // Getter dla listy sąsiadów
-    public List<GameOfLifeCell> getNeighbors() {
-        return neighbors;
+    // Nadpisanie metody toString()
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this).add("Stan komorki: ", value).add("\nLista sasiadow: ", neighbors).toString();
+
+    }
+    // Nadpisanie metody hashCode(), aby porównywać obiekty na podstawie wartości i listy sąsiadów
+
+    @Override
+    public int hashCode() {
+        // Metoda hashCode() służy w Javie do zwrócenia (w miarę) unikalnej wartości liczbowej typu int dla każdego unikalnego obiektu.
+        return Objects.hashCode(value, neighbors);
     }
 
 }
