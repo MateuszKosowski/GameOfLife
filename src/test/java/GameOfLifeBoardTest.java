@@ -224,10 +224,26 @@ class GameOfLifeBoardTest {
         gameOfLifeBoardSmall.set(0, 0, true);
         gameOfLifeBoardSmall.set(1, 0, true);
         gameOfLifeBoardSmall.set(2, 0, true);
-        String expectedString = "Plansza:\n1 0 0 \n1 0 0 \n1 0 0 \n";
+        GameOfLifeCell[][] board = gameOfLifeBoardSmall.getBoard();
+        StringBuilder sb = new StringBuilder();
+        sb.append("GameOfLifeBoard{board=[");
+        for (int i = 0; i < board.length; i++) {
+            sb.append("[");
+            for (int j = 0; j < board[i].length; j++) {
+                sb.append(board[i][j].toString());
+                if (j < board[i].length - 1) {
+                    sb.append(", ");
+                }
+            }
+            sb.append("]");
+            if (i < board.length - 1) {
+                sb.append(", ");
+            }
+        }
+        sb.append("], gameOfLifeSimulator=").append(gameOfLifeSimulator).append("}");
         String actualString = gameOfLifeBoardSmall.toString();
 
-        assertEquals(expectedString, actualString);
+        assertEquals(sb.toString(), actualString);
     }
 
     @Test
@@ -241,11 +257,18 @@ class GameOfLifeBoardTest {
         gameOfLifeBoardSmall2.fillFalse();
         gameOfLifeBoardSmall2.set(0, 0, true);
         gameOfLifeBoardSmall2.set(1, 0, true);
-        gameOfLifeBoardSmall2.set(2, 0, true);
+
+        assertEquals(gameOfLifeBoardSmall, gameOfLifeBoardSmall);
 
         assertNotEquals(gameOfLifeBoardSmall, gameOfLifeBoardSmall2);
 
+        gameOfLifeBoardSmall2.set(2, 0, true);
+
+        assertEquals(gameOfLifeBoardSmall, gameOfLifeBoardSmall2);
+
         assertNotEquals(gameOfLifeBoardSmall, new Object());
+
+        assertNotEquals(gameOfLifeBoardSmall, null);
     }
 
     @Test

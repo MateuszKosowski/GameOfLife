@@ -20,7 +20,7 @@
 
 package org.team1;
 
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 
 import java.util.Arrays;
 import java.util.List;
@@ -148,21 +148,15 @@ public class GameOfLifeBoard {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Plansza:\n");
-        for (GameOfLifeCell[] row : board) {
-            for (GameOfLifeCell cell : row) {
-                sb.append(cell.getValue() ? "1" : "0").append(" ");
-            }
-            sb.append("\n");
-        }
-        return sb.toString();
+        return MoreObjects.toStringHelper(this)
+                .add("board", Arrays.deepToString(board))
+                .add("gameOfLifeSimulator", gameOfLifeSimulator.toString())
+                .toString();
     }
 
     @Override
     public int hashCode() {
         int result = 2137;
-        result = 31 * result + System.identityHashCode(board);
         result = 31 * result + calculateBoardHashCode();
         return result;
     }
@@ -179,10 +173,21 @@ public class GameOfLifeBoard {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof GameOfLifeBoard) {
-            return Objects.equal(this.board, ((GameOfLifeBoard) obj).board);
+        if (this == obj) {
+            return true;
         }
-        return false;
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        GameOfLifeBoard that = (GameOfLifeBoard) obj;
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (board[i][j].getValue() != that.board[i][j].getValue()) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
 }
