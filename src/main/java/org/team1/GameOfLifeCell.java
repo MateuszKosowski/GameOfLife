@@ -25,12 +25,13 @@ import com.google.common.base.Objects;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
 
 
-public class GameOfLifeCell {
+public class GameOfLifeCell implements Serializable {
     private boolean value;
     // Stała referencja do listy sąsiadów, ale wartości w liście mogą się zmieniać
     private final List<GameOfLifeCell> neighbors;

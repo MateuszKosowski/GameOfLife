@@ -22,11 +22,12 @@ package org.team1;
 
 import com.google.common.base.MoreObjects;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class GameOfLifeBoard {
+public class GameOfLifeBoard implements Serializable {
 
     private final GameOfLifeCell[][] board;
     private final GameOfLifeSimulator gameOfLifeSimulator;
