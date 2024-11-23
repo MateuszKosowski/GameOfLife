@@ -20,8 +20,8 @@ package org.team1;
  * #L%
  */
 
-public interface Dao<T> {
-    T read();
-
-    void write(T object);
+public record GameOfLifeBoardDaoFactory() {
+    public FileGameOfLifeBoardDao createFileGameOfLifeBoardDao(String filename) {
+        return new FileGameOfLifeBoardDao(filename);
+    }
 }

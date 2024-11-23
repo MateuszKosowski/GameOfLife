@@ -34,7 +34,7 @@ public class FileGameOfLifeBoardDao implements Dao<GameOfLifeBoard> {
 
     @Override
     public GameOfLifeBoard read() {
-        try(ObjectInputStream oos = new ObjectInputStream(new FileInputStream(fileName))) {
+        try (ObjectInputStream oos = new ObjectInputStream(new FileInputStream(fileName))) {
             return (GameOfLifeBoard) oos.readObject();
         } catch (Exception error) {
             throw new RuntimeException(error);
@@ -44,7 +44,7 @@ public class FileGameOfLifeBoardDao implements Dao<GameOfLifeBoard> {
     @Override
     public void write(GameOfLifeBoard object) {
         // try-with-resources, dzięki temu nie trzeba pisać oos.close()
-        try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
             oos.writeObject(object);
         } catch (Exception error) {
             throw new RuntimeException(error);
