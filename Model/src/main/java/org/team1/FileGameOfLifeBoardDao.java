@@ -25,7 +25,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public class FileGameOfLifeBoardDao implements Dao<GameOfLifeBoard> {
+public class FileGameOfLifeBoardDao implements Dao<GameOfLifeBoard>, AutoCloseable {
     private final String fileName;
 
     public FileGameOfLifeBoardDao(String fileName) {
@@ -51,4 +51,8 @@ public class FileGameOfLifeBoardDao implements Dao<GameOfLifeBoard> {
         }
     }
 
+    @Override
+    public void close() {
+        // nie trzeba nic robić, ale musi być, bo implementujemy AutoCloseable
+    }
 }
