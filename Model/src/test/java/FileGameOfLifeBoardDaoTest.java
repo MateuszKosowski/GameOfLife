@@ -40,6 +40,7 @@ public class FileGameOfLifeBoardDaoTest {
         GameOfLifeBoardDaoFactory factory = new GameOfLifeBoardDaoFactory();
         FileGameOfLifeBoardDao dao = factory.createFileGameOfLifeBoardDao("board.txt");  //new FileGameOfLifeBoardDao();
         dao.write(board);
+        dao.close();
     }
 
     @Test
@@ -65,6 +66,7 @@ public class FileGameOfLifeBoardDaoTest {
 
             // Zwolnij blokadę (po wykonaniu testu)
             lock.release();
+            writer.close();
         }
     }
 
@@ -73,6 +75,7 @@ public class FileGameOfLifeBoardDaoTest {
         FileGameOfLifeBoardDao dao = new FileGameOfLifeBoardDao("board.txt");
         GameOfLifeBoard board = dao.read();
         System.out.println(board.toString());
+        dao.close();
     }
 
     @Test
@@ -81,6 +84,6 @@ public class FileGameOfLifeBoardDaoTest {
         // assertThrows oczekuje przekazania referencji do metody, która jest executable
         // dlatego podajemy referencję do metody (::read), a nie wywołanie metody
         assertThrows(RuntimeException.class, reader::read);
-
+        reader.close();
     }
 }
