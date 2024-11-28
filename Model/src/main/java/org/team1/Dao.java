@@ -20,7 +20,7 @@ package org.team1;
  * #L%
  */
 
-public interface Dao<T> {
+public interface Dao<T> extends AutoCloseable {
     T read();
 
     void write(T object);

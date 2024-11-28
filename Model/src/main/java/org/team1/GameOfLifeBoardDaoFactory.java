@@ -19,9 +19,9 @@ package org.team1;
  * limitations under the License.
  * #L%
  */
-
+// TODO: statyczna metoda, niedostepna do utworzenia klasa
 public record GameOfLifeBoardDaoFactory() {
-    public FileGameOfLifeBoardDao createFileGameOfLifeBoardDao(String filename) {
+    static Dao<GameOfLifeBoard> createFileGameOfLifeBoardDao(String filename) {
         return new FileGameOfLifeBoardDao(filename);
     }
 }

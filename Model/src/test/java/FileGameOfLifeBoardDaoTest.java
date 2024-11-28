@@ -19,10 +19,7 @@
  */
 
 import org.junit.jupiter.api.Test;
-import org.team1.FileGameOfLifeBoardDao;
-import org.team1.GameOfLifeBoard;
-import org.team1.GameOfLifeBoardDaoFactory;
-import org.team1.PlainGameOfLifeSimulator;
+import org.team1.*;
 
 import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
@@ -31,14 +28,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
+// TODO: wszędzie try with resources
 public class FileGameOfLifeBoardDaoTest {
 
     @Test
     void writeTest() throws Exception {
         GameOfLifeBoard board = new GameOfLifeBoard(3, 3, new PlainGameOfLifeSimulator());
         GameOfLifeBoardDaoFactory factory = new GameOfLifeBoardDaoFactory();
-        FileGameOfLifeBoardDao dao = factory.createFileGameOfLifeBoardDao("board.txt");  //new FileGameOfLifeBoardDao();
+        // TODO: to ma dzialac, nie wiem jak to zrobic
+        Dao<GameOfLifeBoard> dao = factory.createFileGameOfLifeBoardDao("board.txt");  //new FileGameOfLifeBoardDao();
         dao.write(board);
         dao.close();
     }
@@ -66,24 +64,30 @@ public class FileGameOfLifeBoardDaoTest {
 
             // Zwolnij blokadę (po wykonaniu testu)
             lock.release();
-            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Test
     void readTest() {
-        FileGameOfLifeBoardDao dao = new FileGameOfLifeBoardDao("board.txt");
-        GameOfLifeBoard board = dao.read();
-        System.out.println(board.toString());
-        dao.close();
+        try (FileGameOfLifeBoardDao dao = new FileGameOfLifeBoardDao("board.txt")) {
+            GameOfLifeBoard board = dao.read();
+            // TODO:
+            System.out.println(board.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     void readFailTest() throws RuntimeException {
-        FileGameOfLifeBoardDao reader = new FileGameOfLifeBoardDao("invalidFile.txt");
-        // assertThrows oczekuje przekazania referencji do metody, która jest executable
-        // dlatego podajemy referencję do metody (::read), a nie wywołanie metody
-        assertThrows(RuntimeException.class, reader::read);
-        reader.close();
+        try (FileGameOfLifeBoardDao reader = new FileGameOfLifeBoardDao("invalidFile.txt")) {
+            // assertThrows oczekuje przekazania referencji do metody, która jest executable
+            // dlatego podajemy referencję do metody (::read), a nie wywołanie metody
+            assertThrows(RuntimeException.class, reader::read);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -25,17 +25,18 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public class FileGameOfLifeBoardDao implements Dao<GameOfLifeBoard>, AutoCloseable {
+public class FileGameOfLifeBoardDao implements Dao<GameOfLifeBoard> {
     private final String fileName;
 
+    // TODO: otwieranie stream w konstruktorze i zamykanie w close()
     public FileGameOfLifeBoardDao(String fileName) {
         this.fileName = fileName;
     }
 
     @Override
     public GameOfLifeBoard read() {
-        try (ObjectInputStream oos = new ObjectInputStream(new FileInputStream(fileName))) {
-            return (GameOfLifeBoard) oos.readObject();
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
+            return (GameOfLifeBoard) ois.readObject();
         } catch (Exception error) {
             throw new RuntimeException(error);
         }
@@ -51,6 +52,7 @@ public class FileGameOfLifeBoardDao implements Dao<GameOfLifeBoard>, AutoCloseab
         }
     }
 
+    // TODO: to ma zamykac strumienie
     @Override
     public void close() {
         // nie trzeba nic robić, ale musi być, bo implementujemy AutoCloseable
