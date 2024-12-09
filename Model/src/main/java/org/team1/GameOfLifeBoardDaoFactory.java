@@ -1,5 +1,7 @@
 package org.team1;
 
+import java.io.IOException;
+
 /*-
  * #%L
  * GameOfLife
@@ -19,9 +21,8 @@ package org.team1;
  * limitations under the License.
  * #L%
  */
-// TODO: statyczna metoda, niedostepna do utworzenia klasa
-public record GameOfLifeBoardDaoFactory() {
-    static Dao<GameOfLifeBoard> createFileGameOfLifeBoardDao(String filename) {
+public abstract class GameOfLifeBoardDaoFactory {
+    static Dao<GameOfLifeBoard> createFileGameOfLifeBoardDao(String filename) throws IOException {
         return new FileGameOfLifeBoardDao(filename);
     }
 }

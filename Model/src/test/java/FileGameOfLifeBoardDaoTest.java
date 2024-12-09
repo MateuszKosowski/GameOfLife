@@ -28,17 +28,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-// TODO: wszędzie try with resources
 public class FileGameOfLifeBoardDaoTest {
 
     @Test
     void writeTest() throws Exception {
         GameOfLifeBoard board = new GameOfLifeBoard(3, 3, new PlainGameOfLifeSimulator());
-        GameOfLifeBoardDaoFactory factory = new GameOfLifeBoardDaoFactory();
-        // TODO: to ma dzialac, nie wiem jak to zrobic
-        Dao<GameOfLifeBoard> dao = factory.createFileGameOfLifeBoardDao("board.txt");  //new FileGameOfLifeBoardDao();
-        dao.write(board);
-        dao.close();
+        try (Dao<GameOfLifeBoard> dao = new FileGameOfLifeBoardDao("board.txt")) {
+            dao.write(board);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -51,12 +50,14 @@ public class FileGameOfLifeBoardDaoTest {
 
         // Spróbuj zablokować plik
         try (RandomAccessFile raf = new RandomAccessFile(filePath.toFile(), "rw");
-             FileChannel channel = raf.getChannel()) {
+             FileChannel channel = raf.getChannel();
+             FileGameOfLifeBoardDao writer = new FileGameOfLifeBoardDao(filePath.toString())
+             ) {
             // Blokada pliku
             FileLock lock = channel.lock();
 
             // Spróbuj zapisać do zablokowanego pliku
-            FileGameOfLifeBoardDao writer = new FileGameOfLifeBoardDao(filePath.toString());
+
             GameOfLifeBoard board = new GameOfLifeBoard(3, 3, new PlainGameOfLifeSimulator());
 
             // Tutaj trzeba użyć lambdy, ponieważ metoda write przyjmuje argument typu GameOfLifeBoard
@@ -73,7 +74,6 @@ public class FileGameOfLifeBoardDaoTest {
     void readTest() {
         try (FileGameOfLifeBoardDao dao = new FileGameOfLifeBoardDao("board.txt")) {
             GameOfLifeBoard board = dao.read();
-            // TODO:
             System.out.println(board.toString());
         } catch (Exception e) {
             e.printStackTrace();

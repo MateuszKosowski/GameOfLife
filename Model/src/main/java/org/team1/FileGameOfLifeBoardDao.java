@@ -20,41 +20,49 @@ package org.team1;
  * #L%
  */
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 
 public class FileGameOfLifeBoardDao implements Dao<GameOfLifeBoard> {
-    private final String fileName;
+    private final FileInputStream fis;
+    private final ObjectInputStream ois;
+    private final FileOutputStream fos;
+    private final ObjectOutputStream oos;
 
-    // TODO: otwieranie stream w konstruktorze i zamykanie w close()
-    public FileGameOfLifeBoardDao(String fileName) {
-        this.fileName = fileName;
+    public FileGameOfLifeBoardDao(String fileName) throws IOException {
+        this.fis = new FileInputStream(fileName);
+        this.ois = new ObjectInputStream(this.fis);
+        this.fos = new FileOutputStream(fileName);
+        this.oos = new ObjectOutputStream(this.fos);
     }
 
     @Override
     public GameOfLifeBoard read() {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
+        try {
             return (GameOfLifeBoard) ois.readObject();
-        } catch (Exception error) {
-            throw new RuntimeException(error);
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public void write(GameOfLifeBoard object) {
         // try-with-resources, dzięki temu nie trzeba pisać oos.close()
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
+        try {
             oos.writeObject(object);
-        } catch (Exception error) {
-            throw new RuntimeException(error);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    // TODO: to ma zamykac strumienie
     @Override
     public void close() {
-        // nie trzeba nic robić, ale musi być, bo implementujemy AutoCloseable
+        try {
+            fis.close();
+            ois.close();
+            fos.close();
+            oos.close();
+        } catch (IOException error) {
+            throw new RuntimeException(error);
+        }
     }
 }
