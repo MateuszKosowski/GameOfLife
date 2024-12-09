@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,18 +27,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class GameOfLifeBoard implements Serializable {
+public class GameOfLifeBoard implements Serializable, Cloneable {
 
     private final GameOfLifeCell[][] board;
     private final GameOfLifeSimulator gameOfLifeSimulator;
 
     // Konstruktor, który tworzy planszę o podanych wymiarach i przypisuje obiekt GameOfLifeSimulator
-    public GameOfLifeBoard(int width, int height, GameOfLifeSimulator gameOfLifeSimulator) throws Exception {
+    public GameOfLifeBoard(int width, int height, GameOfLifeSimulator gameOfLifeSimulator) {
         if (width < 0 || height < 0) {
-            throw new Exception("Width or height is negative number");
+            width = 3;
+            height = 3;
         }
         this.gameOfLifeSimulator = java.util.Objects
-            .requireNonNullElseGet(gameOfLifeSimulator, PlainGameOfLifeSimulator::new);
+                .requireNonNullElseGet(gameOfLifeSimulator, PlainGameOfLifeSimulator::new);
         this.board = new GameOfLifeCell[width][height];
 
         fillBoard();
@@ -191,4 +192,19 @@ public class GameOfLifeBoard implements Serializable {
         return true;
     }
 
+    @Override
+    public GameOfLifeBoard clone() {
+        GameOfLifeBoard clone = new GameOfLifeBoard(board.length, board[0].length, gameOfLifeSimulator);
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                clone.board[i][j] = board[i][j].clone();
+            }
+        }
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                clone.assignNeighborsToCell(i, j);
+            }
+        }
+        return clone;
+    }
 }

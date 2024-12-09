@@ -22,10 +22,14 @@ package org.team1;
 
 import java.util.List;
 
-public class GameOfLifeColumn extends GameOfLifeLine {
+public class GameOfLifeColumn extends GameOfLifeLine implements Cloneable {
 
   public GameOfLifeColumn(List<GameOfLifeCell> line) {
     super(line);
   }
 
+  @Override
+  public GameOfLifeLine clone() {
+    return new GameOfLifeColumn(this.line);
+  }
 }

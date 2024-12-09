@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,26 +17,27 @@
  * limitations under the License.
  * #L%
  */
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.team1.*;
-import java.util.List;
 
 import java.beans.PropertyChangeEvent;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameOfLifeBoardTest {
+    private final GameOfLifeSimulator gameOfLifeSimulator = new PlainGameOfLifeSimulator();
     private GameOfLifeBoard gameOfLifeBoard;
     private GameOfLifeBoard gameOfLifeBoardSmall;
-    private final GameOfLifeSimulator gameOfLifeSimulator = new PlainGameOfLifeSimulator();
 
     @BeforeEach
     void createGameOfLifeBoard() throws Exception {
-         gameOfLifeBoard = new GameOfLifeBoard(8, 8, gameOfLifeSimulator);
-         gameOfLifeBoardSmall = new GameOfLifeBoard(3, 3, gameOfLifeSimulator);
+        gameOfLifeBoard = new GameOfLifeBoard(8, 8, gameOfLifeSimulator);
+        gameOfLifeBoardSmall = new GameOfLifeBoard(3, 3, gameOfLifeSimulator);
     }
 
     // Martwa komórka mająca dokładnie trzech żywych sąsiadów staje się żywa w następnym kroku
@@ -99,10 +100,10 @@ class GameOfLifeBoardTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenWidthOrHeightIsNegativeNumber() {
-        Assertions.assertThrows(Exception.class, () -> new GameOfLifeBoard(-1, 1, gameOfLifeSimulator));
+    void negativeSizeTest() {
+        assertEquals(3, new GameOfLifeBoard(-1, 1, gameOfLifeSimulator).getBoard().length);
 
-        Assertions.assertThrows(Exception.class, () -> new GameOfLifeBoard(1, -1, gameOfLifeSimulator));
+        assertEquals(3, new GameOfLifeBoard(1, -1, gameOfLifeSimulator).getBoard()[0].length);
     }
 
     @Test
@@ -284,5 +285,31 @@ class GameOfLifeBoardTest {
 
         gameOfLifeBoardSmall.set(2, 0, false);
         assertNotEquals(expectedHashCode, gameOfLifeBoardSmall.hashCode());
+    }
+
+    @Test
+    void cloneTest() {
+        gameOfLifeBoardSmall.fillFalse();
+        gameOfLifeBoardSmall.set(0, 0, true);
+        gameOfLifeBoardSmall.set(1, 0, true);
+        gameOfLifeBoardSmall.set(2, 0, true);
+
+        GameOfLifeBoard clonedBoard = gameOfLifeBoardSmall.clone();
+
+        assertEquals(gameOfLifeBoardSmall, clonedBoard);
+    }
+
+    @Test
+    void cloneTest2() {
+        gameOfLifeBoardSmall.fillFalse();
+        gameOfLifeBoardSmall.set(0, 0, true);
+        gameOfLifeBoardSmall.set(1, 0, true);
+        gameOfLifeBoardSmall.set(2, 0, true);
+
+        GameOfLifeBoard clonedBoard = gameOfLifeBoardSmall.clone();
+
+        clonedBoard.set(2, 0, false);
+
+        assertNotEquals(gameOfLifeBoardSmall, clonedBoard);
     }
 }

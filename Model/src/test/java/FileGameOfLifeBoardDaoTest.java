@@ -27,6 +27,7 @@ import java.nio.channels.FileLock;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 public class FileGameOfLifeBoardDaoTest {
 
@@ -74,7 +75,6 @@ public class FileGameOfLifeBoardDaoTest {
     void readTest() {
         try (FileGameOfLifeBoardDao dao = new FileGameOfLifeBoardDao("board.txt")) {
             GameOfLifeBoard board = dao.read();
-            System.out.println(board.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }

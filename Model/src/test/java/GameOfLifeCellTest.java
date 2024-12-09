@@ -27,12 +27,12 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GameOfLifeCellTest {
-    GameOfLifeCell Cell;
+    GameOfLifeCell cell;
     List<GameOfLifeCell> exampleNeighbors = Arrays.asList(new GameOfLifeCell[8]);
 
     @BeforeEach
     void createGameOfLifeCell() {
-        Cell = new GameOfLifeCell(true);
+        cell = new GameOfLifeCell(true);
 
         exampleNeighbors.set(0, new GameOfLifeCell(false));
         exampleNeighbors.set(1, new GameOfLifeCell(false));
@@ -46,31 +46,31 @@ public class GameOfLifeCellTest {
 
     @Test
     void returnValueTest() {
-        assertTrue(Cell.getValue());
+        assertTrue(cell.getValue());
     }
 
     @Test
     void setValuesTest() {
-        Cell.updateState(false);
-        assertFalse(Cell.getValue());
+        cell.updateState(false);
+        assertFalse(cell.getValue());
     }
 
     @Test
     void setNeighborsTest() {
 
-        Cell.setNeighbors(exampleNeighbors);
+        cell.setNeighbors(exampleNeighbors);
 
         // Porówanie czy sąsiedzi są ustawieni poprawnie
         for (int i = 0; i < exampleNeighbors.size(); i++) {
-            assertEquals(Cell.getNeighbors().get(i).getValue(), exampleNeighbors.get(i).getValue());
+            assertEquals(cell.getNeighbors().get(i).getValue(), exampleNeighbors.get(i).getValue());
         }
 
     }
 
     @Test
     void nextStateTest1() {
-        Cell.setNeighbors(exampleNeighbors);
-        assertFalse(Cell.nextState());
+        cell.setNeighbors(exampleNeighbors);
+        assertFalse(cell.nextState());
     }
 
     @Test
@@ -83,8 +83,8 @@ public class GameOfLifeCellTest {
         exampleNeighbors.set(5, new GameOfLifeCell(true));
         exampleNeighbors.set(6, new GameOfLifeCell(true));
         exampleNeighbors.set(7, new GameOfLifeCell(true));
-        Cell.setNeighbors(exampleNeighbors);
-        assertFalse(Cell.nextState());
+        cell.setNeighbors(exampleNeighbors);
+        assertFalse(cell.nextState());
     }
 
     @Test
@@ -97,13 +97,13 @@ public class GameOfLifeCellTest {
         exampleNeighbors.set(5, new GameOfLifeCell(false));
         exampleNeighbors.set(6, new GameOfLifeCell(false));
         exampleNeighbors.set(7, new GameOfLifeCell(false));
-        Cell.setNeighbors(exampleNeighbors);
-        assertTrue(Cell.nextState());
+        cell.setNeighbors(exampleNeighbors);
+        assertTrue(cell.nextState());
     }
 
     @Test
     void nextStateTest4() {
-        Cell.updateState(false);
+        cell.updateState(false);
 
         exampleNeighbors.set(0, new GameOfLifeCell(true));
         exampleNeighbors.set(1, new GameOfLifeCell(true));
@@ -113,63 +113,63 @@ public class GameOfLifeCellTest {
         exampleNeighbors.set(5, new GameOfLifeCell(false));
         exampleNeighbors.set(6, new GameOfLifeCell(false));
         exampleNeighbors.set(7, new GameOfLifeCell(false));
-        Cell.setNeighbors(exampleNeighbors);
-        assertTrue(Cell.nextState());
+        cell.setNeighbors(exampleNeighbors);
+        assertTrue(cell.nextState());
     }
 
     @Test
     void hashCodeTest(){
-        Cell.setNeighbors(exampleNeighbors);
-        int output = Cell.hashCode();
-        int expectedOutput = Cell.hashCode();
+        cell.setNeighbors(exampleNeighbors);
+        int output = cell.hashCode();
+        int expectedOutput = cell.hashCode();
         assertEquals(output, expectedOutput);
     }
 
     @Test
     void hashCodeTest2(){
-        Cell.setNeighbors(exampleNeighbors);
-        int output = Cell.hashCode();
-        Cell.updateState(false);
-        int expectedOutput = Cell.hashCode();
+        cell.setNeighbors(exampleNeighbors);
+        int output = cell.hashCode();
+        cell.updateState(false);
+        int expectedOutput = cell.hashCode();
         assertNotEquals(output, expectedOutput);
     }
 
     @Test
     void equalsTest(){
-        Cell.setNeighbors(exampleNeighbors);
+        cell.setNeighbors(exampleNeighbors);
         GameOfLifeCell Cell2 = new GameOfLifeCell(true);
         Cell2.setNeighbors(exampleNeighbors);
-        assertTrue(Cell.equals(Cell2));
+        assertTrue(cell.equals(Cell2));
     }
 
     @Test
     void equalsTest2(){
-        Cell.setNeighbors(exampleNeighbors);
+        cell.setNeighbors(exampleNeighbors);
         GameOfLifeCell Cell2 = new GameOfLifeCell(true);
         Cell2.setNeighbors(exampleNeighbors);
         Cell2.updateState(false);
-        assertFalse(Cell.equals(Cell2));
+        assertFalse(cell.equals(Cell2));
     }
 
     @Test
     void equalsTest3(){
-        Cell.setNeighbors(exampleNeighbors);
+        cell.setNeighbors(exampleNeighbors);
         GameOfLifeCell Cell2 = new GameOfLifeCell(true);
         exampleNeighbors.set(0, new GameOfLifeCell(true));
         Cell2.setNeighbors(exampleNeighbors);
-        assertFalse(Cell.equals(Cell2));
+        assertFalse(cell.equals(Cell2));
     }
 
     @Test
     void equalsTest4(){
-        Cell.setNeighbors(exampleNeighbors);
-        assertFalse(Cell.equals(new Object()));
+        cell.setNeighbors(exampleNeighbors);
+        assertFalse(cell.equals(new Object()));
     }
 
     @Test
     void toStringTest(){
-        Cell.setNeighbors(exampleNeighbors);
-        String output = Cell.toString();
+        cell.setNeighbors(exampleNeighbors);
+        String output = cell.toString();
         String expectedOutput = "GameOfLifeCell{Stan komorki=true, Lista sasiadow=[false, false, false, false, false, false, false, false]}";
         assertEquals(output, expectedOutput);
     }
@@ -177,10 +177,40 @@ public class GameOfLifeCellTest {
     @Test
     void toStringTest2(){
         exampleNeighbors.set(0, null);
-        Cell.setNeighbors(exampleNeighbors);
-        String output = Cell.toString();
+        cell.setNeighbors(exampleNeighbors);
+        String output = cell.toString();
         String expectedOutput = "GameOfLifeCell{Stan komorki=true, Lista sasiadow=[null, false, false, false, false, false, false, false]}";
         assertEquals(output, expectedOutput);
+    }
+
+    @Test
+    void cloneTest() {
+        GameOfLifeCell clone = cell.clone();
+        assertEquals(cell.getValue(), clone.getValue());
+    }
+
+    @Test
+    void cloneTest2() {
+        GameOfLifeCell clone = cell.clone();
+        assertEquals(cell.getNeighbors(), clone.getNeighbors());
+    }
+
+    @Test
+    void compareToTest() {
+        GameOfLifeCell cell1 = new GameOfLifeCell(true);
+        assertEquals(0, this.cell.compareTo(cell1));
+    }
+
+    @Test
+    void compareToTest2() {
+        GameOfLifeCell cell1 = new GameOfLifeCell(false);
+        assertEquals(1, this.cell.compareTo(cell1));
+    }
+
+    @Test
+    void compareToTest3() {
+        GameOfLifeCell cell1 = new GameOfLifeCell(false);
+        assertEquals(-1, cell1.compareTo(this.cell));
     }
 
 }

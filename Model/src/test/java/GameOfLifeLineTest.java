@@ -30,9 +30,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GameOfLifeLineTest {
-    GameOfLifeLine line;
-    GameOfLifeLine line1;
-    GameOfLifeLine line2;
+    GameOfLifeRow line;
+    GameOfLifeColumn line1;
 
     @BeforeEach
     void createGameOfLifeLine() {
@@ -109,5 +108,20 @@ public class GameOfLifeLineTest {
     public void equalsTest3(){
         boolean output = line.equals(null);
         assertFalse(output);
+    }
+
+    @Test
+    public void cloneTest(){
+        GameOfLifeLine line2 = line.clone();
+        GameOfLifeLine line3 = line1.clone();
+        assertEquals(line.getLine(), line2.getLine());
+        assertEquals(line1.getLine(), line3.getLine());
+        assertNotEquals(line.getLine(), line1.getLine());
+    }
+
+    @Test
+    public void cloneTest2(){
+        GameOfLifeLine line2 = line.clone();
+        assertEquals(line.getLine(), line2.getLine());
     }
 }
