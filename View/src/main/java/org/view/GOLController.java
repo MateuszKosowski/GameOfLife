@@ -6,6 +6,10 @@ import javafx.scene.control.*;
 // import własnych klas
 import org.team1.*;
 
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
+
 
 // Ta klasa odpowiada za:
 // Obsługę zdarzeń związanych z interfejsem użytkownika.
@@ -38,6 +42,8 @@ public class GOLController {
     @FXML
     private ToggleGroup groupOfLife;
 
+    GameOfLifeBoard theGame;
+
     @FXML
     public void initialize() {
         confirmButton.setOnAction(e -> {
@@ -46,8 +52,42 @@ public class GOLController {
             minMaxSize(heightField);
             height = Integer.parseInt(heightField.getText());
             getOption();
+            theGame = createGame();
             System.out.println("Width: " + widthField.getText() + " Height: " + heightField.getText());
         });
+    }
+
+    private GameOfLifeBoard createGame() {
+        final GameOfLifeSimulator gameOfLifeSimulator = new PlainGameOfLifeSimulator();
+        GameOfLifeBoard gameOfLifeBoard = new GameOfLifeBoard(width, height, gameOfLifeSimulator);
+
+        // Wypełnienie planszy losowymi wartościami
+        Random random = new Random();
+        int totalCells = width * height;
+        int cellsToFill = (int) (totalCells * (option / 100.0));
+
+        //Tworzony jest pusty Set, który będzie przechowywać unikalne indeksy komórek do wypełnienia.
+        Set<Integer> filledCells = new HashSet<>();
+
+        //Dopóki Set nie zawiera odpowiedniej liczby indeksów, losowane są kolejne indeksy i dodawane do Setu.
+        while (filledCells.size() < cellsToFill) {
+            // Generuje losową liczbę całkowitą od 0 do totalCells - 1
+            int cellIndex = random.nextInt(totalCells);
+            // Próbuje dodać losowy indeks komórki do zestawu, jeśli już tam jest, to nie zostanie dodany.
+            filledCells.add(cellIndex);
+        }
+
+        //Iteruje po wszystkich indeksach komórek w zestawie i ustawia je na true.
+        for (int cellIndex : filledCells) {
+            // Oblicza współrzędne komórki na podstawie indeksu.
+            // Dzieli indeks komórki przez szerokość planszy, aby uzyskać indeks wiersza.
+            int i = cellIndex / width;
+            // Oblicza resztę z dzielenia indeksu komórki przez szerokość planszy, aby uzyskać indeks kolumny.
+            int j = cellIndex % width;
+            gameOfLifeBoard.set(i, j, true);
+        }
+
+        return gameOfLifeBoard;
     }
 
     private void getOption() {
