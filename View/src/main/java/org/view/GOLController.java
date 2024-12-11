@@ -2,7 +2,9 @@ package org.view;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.util.converter.IntegerStringConverter;
+
+// import własnych klas
+import org.team1.*;
 
 
 // Ta klasa odpowiada za:
@@ -10,6 +12,10 @@ import javafx.util.converter.IntegerStringConverter;
 // Przechowywanie referencji do elementów interfejsu użytkownika.
 // Implementację logiki aplikacji.
 public class GOLController {
+
+    private int width;
+    private int height;
+    private int option;
 
     @FXML
     private TextField widthField;
@@ -36,9 +42,22 @@ public class GOLController {
     public void initialize() {
         confirmButton.setOnAction(e -> {
             minMaxSize(widthField);
+            width = Integer.parseInt(widthField.getText());
             minMaxSize(heightField);
+            height = Integer.parseInt(heightField.getText());
+            getOption();
             System.out.println("Width: " + widthField.getText() + " Height: " + heightField.getText());
         });
+    }
+
+    private void getOption() {
+        if (option1.isSelected()) {
+            option = 10;
+        } else if (option2.isSelected()) {
+            option = 30;
+        } else if (option3.isSelected()) {
+            option = 50;
+        }
     }
 
     private void minMaxSize(TextField field) {
