@@ -200,11 +200,6 @@ public class GameOfLifeBoard implements Serializable, Cloneable {
                 clone.board[i][j] = board[i][j].clone();
             }
         }
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[0].length; j++) {
-                clone.assignNeighborsToCell(i, j);
-            }
-        }
         return clone;
     }
 }

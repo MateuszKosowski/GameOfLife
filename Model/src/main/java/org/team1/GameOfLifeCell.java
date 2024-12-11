@@ -125,6 +125,9 @@ public class GameOfLifeCell implements Serializable, Cloneable, Comparable<GameO
 
     @Override
     public int compareTo(GameOfLifeCell o) {
+        if (o == null) {
+            throw new NullPointerException();
+        }
         return Boolean.compare(value, o.value);
     }
 

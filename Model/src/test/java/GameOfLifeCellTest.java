@@ -213,4 +213,10 @@ public class GameOfLifeCellTest {
         assertEquals(-1, cell1.compareTo(this.cell));
     }
 
+    @Test
+    void compareToTest4() {
+        GameOfLifeCell cell1 = null;
+        assertThrows(NullPointerException.class, () -> this.cell.compareTo(cell1));
+    }
+
 }
