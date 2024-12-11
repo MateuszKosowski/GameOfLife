@@ -16,13 +16,19 @@
 
     <HBox alignment="CENTER" spacing="10.0">
         <Label text="Podaj wysokosc planszy: " />
-        <TextField fx:id="heightField" />
+        <TextField fx:id="heightField" promptText="Z zakresu (4-20)"/>
     </HBox>
     <HBox alignment="CENTER" spacing="10.0">
         <Label text="Podaj szerokosc planszy: " />
-        <TextField fx:id="widthField" />
+        <TextField fx:id="widthField" promptText="Z zakresu (4-20)"/>
+    </HBox>
+    <HBox alignment="CENTER" spacing="10.0">
+        <Label text="Wybierz zageszczenie zywych komorek: " />
+        <RadioButton fx:id="option1" text="Male (10%)" toggleGroup="$groupOfLife" selected="true"/>
+        <RadioButton fx:id="option2" text="Srednie (30%)" toggleGroup="$groupOfLife" />
+        <RadioButton fx:id="option3" text="Duze (50%)" toggleGroup="$groupOfLife" />
     </HBox>
 
-<!--    <Label fx:id="welcomeText" />-->
-<!--    <Button onAction="#onHelloButtonClick" prefHeight="25.0" prefWidth="175.0" text="Hello!" />-->
+    <Button fx:id="confirmButton" text="Rozpocznij Symulacje" />
+
 </VBox>
