@@ -39,13 +39,15 @@ public class GOLController {
     @FXML
     private RadioButton option3;
 
-    @FXML
-    private ToggleGroup groupOfLife;
+    public ToggleGroup groupOfLife;
 
     GameOfLifeBoard theGame;
 
     @FXML
     public void initialize() {
+
+        setGroup();
+
         confirmButton.setOnAction(e -> {
             minMaxSize(widthField);
             width = Integer.parseInt(widthField.getText());
@@ -53,8 +55,15 @@ public class GOLController {
             height = Integer.parseInt(heightField.getText());
             getOption();
             theGame = createGame();
-            System.out.println("Width: " + widthField.getText() + " Height: " + heightField.getText());
+            System.out.println("Width: " + widthField.getText() + " Height: " + heightField.getText()  + " Option: " + option);
         });
+    }
+
+    private void setGroup() {
+        groupOfLife = new ToggleGroup();
+        option1.setToggleGroup(groupOfLife);
+        option2.setToggleGroup(groupOfLife);
+        option3.setToggleGroup(groupOfLife);
     }
 
     private GameOfLifeBoard createGame() {
