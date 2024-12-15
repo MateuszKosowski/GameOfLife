@@ -68,7 +68,7 @@ public class GOLController {
 
     private GameOfLifeBoard createGame() {
         final GameOfLifeSimulator gameOfLifeSimulator = new PlainGameOfLifeSimulator();
-        GameOfLifeBoard gameOfLifeBoard = new GameOfLifeBoard(width, height, gameOfLifeSimulator);
+        GameOfLifeBoard gameOfLifeBoard = new GameOfLifeBoard(height, width, gameOfLifeSimulator);
 
         // Wypełnienie planszy losowymi wartościami
         Random random = new Random();

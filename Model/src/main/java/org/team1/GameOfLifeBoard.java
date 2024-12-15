@@ -33,14 +33,14 @@ public class GameOfLifeBoard implements Serializable, Cloneable {
     private final GameOfLifeSimulator gameOfLifeSimulator;
 
     // Konstruktor, który tworzy planszę o podanych wymiarach i przypisuje obiekt GameOfLifeSimulator
-    public GameOfLifeBoard(int width, int height, GameOfLifeSimulator gameOfLifeSimulator) {
-        if (width < 0 || height < 0) {
-            width = 3;
+    public GameOfLifeBoard(int height, int width, GameOfLifeSimulator gameOfLifeSimulator) {
+        if (height < 0 || width < 0) {
             height = 3;
+            width = 3;
         }
         this.gameOfLifeSimulator = java.util.Objects
                 .requireNonNullElseGet(gameOfLifeSimulator, PlainGameOfLifeSimulator::new);
-        this.board = new GameOfLifeCell[width][height];
+        this.board = new GameOfLifeCell[height][width];
 
         fillBoard();
     }

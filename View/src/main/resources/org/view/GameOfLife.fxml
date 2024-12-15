@@ -24,9 +24,9 @@
     </HBox>
     <HBox alignment="CENTER" spacing="10.0">
         <Label text="Wybierz zageszczenie zywych komorek: " />
-        <RadioButton fx:id="option1" text="Male (10%)" toggleGroup="$groupOfLife" selected="true"/>
-        <RadioButton fx:id="option2" text="Srednie (30%)" toggleGroup="$groupOfLife" />
-        <RadioButton fx:id="option3" text="Duze (50%)" toggleGroup="$groupOfLife" />
+        <RadioButton fx:id="option1" text="Male (10%)" selected="true"/>
+        <RadioButton fx:id="option2" text="Srednie (30%)" />
+        <RadioButton fx:id="option3" text="Duze (50%)"  />
     </HBox>
 
     <Button fx:id="confirmButton" text="Rozpocznij Symulacje" />
