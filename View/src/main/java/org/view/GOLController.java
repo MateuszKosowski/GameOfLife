@@ -1,6 +1,7 @@
 package org.view;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 
 // import własnych klas
@@ -56,6 +57,13 @@ public class GOLController {
             getOption();
             theGame = createGame();
             System.out.println("Width: " + widthField.getText() + " Height: " + heightField.getText()  + " Option: " + option);
+            try {
+                FXMLLoader loaderBoardView = GOLApplication.switchView("BoardView.fxml");
+                BoardController controller = loaderBoardView.getController();
+                controller.setSize(width, height);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
         });
     }
 
