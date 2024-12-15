@@ -107,21 +107,30 @@ public class BoardController {
     @FXML
     private void loadFile() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Text Files", "*.txt")
+        );
 
-        // Pokazuje okno wyboru pliku
-        File file = fileChooser.showOpenDialog(null);
+        File file = fileChooser.showOpenDialog(boardPane.getScene().getWindow());
 
         if (file != null) {
-            // Wczytaj planszę z pliku (tutaj musisz zaimplementować odczyt planszy)
-            System.out.println("Wczytano z: " + file.getAbsolutePath());
-            try (FileGameOfLifeBoardDao dao = new FileGameOfLifeBoardDao(file.getName())) {
-                gameOfLifeBoard = dao.read();
-                GameOfLifeCell[][] board = gameOfLifeBoard.getBoard();
-                int width = board[0].length;
-                int height = board.length;
-                initializeBoard(width, height, gameOfLifeBoard);
+            try {
+                // Ensure file has correct extension
+                String path = file.getPath();
+                if (!path.endsWith(".txt")) {
+                    path += ".txt";
+                }
+
+                try (FileGameOfLifeBoardDao dao = new FileGameOfLifeBoardDao(file.getPath())) {
+                    gameOfLifeBoard = dao.read();
+                    GameOfLifeCell[][] board = gameOfLifeBoard.getBoard();
+                    int width = board[0].length;
+                    int height = board.length;
+                    initializeBoard(width, height, gameOfLifeBoard);
+                    showAlert(Alert.AlertType.INFORMATION, "Success", "Game loaded successfully!");
+                }
             } catch (Exception e) {
+                showAlert(Alert.AlertType.ERROR, "Error", "Could not load game: " + e.getMessage());
                 e.printStackTrace();
             }
         }
