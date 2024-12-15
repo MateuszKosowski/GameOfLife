@@ -30,7 +30,7 @@ public class BoardController {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 // Tworzenie przycisku jako komórki
-                Pane cell = new Pane();
+                Button cell = new Button();
 
                 cell.setMinSize(cellSize, cellSize);
                 cell.setMaxSize(cellSize, cellSize);
@@ -39,12 +39,18 @@ public class BoardController {
                 boolean isFilled = boardState[y][x].getValue();
                 updateCellStyle(cell, isFilled);
 
+                final int r = y, c = x; // Potrzebne do lambdy
+                cell.setOnAction(event -> {
+                    gameOfLifeBoard.set(r, c, !boardState[r][c].getValue()); // Zmień stan komórki
+                    updateCellStyle(cell, boardState[r][c].getValue());
+                });
+
                 boardPane.add(cell, x, y);
             }
         }
     }
 
-    private void updateCellStyle(Pane cell, boolean isFilled) {
+    private void updateCellStyle(Button cell, boolean isFilled) {
         if (isFilled) {
             cell.setStyle("-fx-background-color: black; -fx-border-color: black;");
         } else {
