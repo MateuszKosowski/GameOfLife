@@ -60,7 +60,7 @@ public class GOLController {
             try {
                 FXMLLoader loaderBoardView = GOLApplication.switchView("BoardView.fxml");
                 BoardController controller = loaderBoardView.getController();
-                controller.setSize(width, height);
+                controller.initializeBoard(width, height, theGame);
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
@@ -76,33 +76,7 @@ public class GOLController {
 
     private GameOfLifeBoard createGame() {
         final GameOfLifeSimulator gameOfLifeSimulator = new PlainGameOfLifeSimulator();
-        GameOfLifeBoard gameOfLifeBoard = new GameOfLifeBoard(height, width, gameOfLifeSimulator);
-
-        // Wypełnienie planszy losowymi wartościami
-        Random random = new Random();
-        int totalCells = width * height;
-        int cellsToFill = (int) (totalCells * (option / 100.0));
-
-        //Tworzony jest pusty Set, który będzie przechowywać unikalne indeksy komórek do wypełnienia.
-        Set<Integer> filledCells = new HashSet<>();
-
-        //Dopóki Set nie zawiera odpowiedniej liczby indeksów, losowane są kolejne indeksy i dodawane do Setu.
-        while (filledCells.size() < cellsToFill) {
-            // Generuje losową liczbę całkowitą od 0 do totalCells - 1
-            int cellIndex = random.nextInt(totalCells);
-            // Próbuje dodać losowy indeks komórki do zestawu, jeśli już tam jest, to nie zostanie dodany.
-            filledCells.add(cellIndex);
-        }
-
-        //Iteruje po wszystkich indeksach komórek w zestawie i ustawia je na true.
-        for (int cellIndex : filledCells) {
-            // Oblicza współrzędne komórki na podstawie indeksu.
-            // Dzieli indeks komórki przez szerokość planszy, aby uzyskać indeks wiersza.
-            int i = cellIndex / width;
-            // Oblicza resztę z dzielenia indeksu komórki przez szerokość planszy, aby uzyskać indeks kolumny.
-            int j = cellIndex % width;
-            gameOfLifeBoard.set(i, j, true);
-        }
+        GameOfLifeBoard gameOfLifeBoard = new GameOfLifeBoard(height, width, gameOfLifeSimulator, option);
 
         return gameOfLifeBoard;
     }
@@ -129,6 +103,9 @@ public class GOLController {
         } catch (NumberFormatException e) {
             field.setText(String.valueOf(4));
         }
+
     }
 
 }
+
+

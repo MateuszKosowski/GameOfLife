@@ -36,6 +36,7 @@ public class GOLApplication extends Application {
         stage.show();
     }
 
+
     public static FXMLLoader switchView(String fxmlFilePath) throws Exception {
         FXMLLoader loader = new FXMLLoader(GOLApplication.class.getResource(fxmlFilePath));
         Scene scene = new Scene(loader.load());

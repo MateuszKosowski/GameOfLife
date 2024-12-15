@@ -5,24 +5,23 @@ import javafx.scene.control.*;
 
 // import własnych klas
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import org.team1.*;
 
 
 public class BoardController {
-    private int width;
-    private int height;
     @FXML
     private GridPane boardPane;
 
     @FXML
     private Label boardSizeLabel;
 
-    public void setSize(int width, int height) {
-        this.width = width;
-        this.height = height;
-    }
+    private GameOfLifeBoard gameOfLifeBoard;
 
-    public void initializeBoard(int width, int height) {
+    public void initializeBoard(int width, int height, GameOfLifeBoard game) {
+        gameOfLifeBoard = game;
+        GameOfLifeCell[][] boardState = gameOfLifeBoard.getBoard();
+        int cellSize = 35;
         // Wyświetl informacje o wymiarach planszy
         boardSizeLabel.setText("Plansza: " + width + " x " + height);
 
@@ -30,15 +29,26 @@ public class BoardController {
         boardPane.getChildren().clear(); // Wyczyść, jeśli istnieje zawartość
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                Label cell = new Label("[" + x + "," + y + "]");
-                cell.setStyle("-fx-border-color: black; -fx-alignment: center; -fx-padding: 5px;");
-                boardPane.add(cell, x, y); // Dodaj do GridPane
+                // Tworzenie przycisku jako komórki
+                Pane cell = new Pane();
+
+                cell.setMinSize(cellSize, cellSize);
+                cell.setMaxSize(cellSize, cellSize);
+
+                // Ustawienie koloru w zależności od stanu
+                boolean isFilled = boardState[y][x].getValue();
+                updateCellStyle(cell, isFilled);
+
+                boardPane.add(cell, x, y);
             }
         }
     }
 
-    public void initialize() {
-        initializeBoard(width, height);
+    private void updateCellStyle(Pane cell, boolean isFilled) {
+        if (isFilled) {
+            cell.setStyle("-fx-background-color: black; -fx-border-color: black;");
+        } else {
+            cell.setStyle("-fx-background-color: white; -fx-border-color: black;");
+        }
     }
-
 }

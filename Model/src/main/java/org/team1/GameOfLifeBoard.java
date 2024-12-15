@@ -23,9 +23,7 @@ package org.team1;
 import com.google.common.base.MoreObjects;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class GameOfLifeBoard implements Serializable, Cloneable {
 
@@ -43,6 +41,19 @@ public class GameOfLifeBoard implements Serializable, Cloneable {
         this.board = new GameOfLifeCell[height][width];
 
         fillBoard();
+    }
+
+    // Konstruktor z opcja, który tworzy planszę o podanych wymiarach i przypisuje obiekt GameOfLifeSimulator
+    public GameOfLifeBoard(int height, int width, GameOfLifeSimulator gameOfLifeSimulator, int option) {
+        if (height < 0 || width < 0) {
+            height = 3;
+            width = 3;
+        }
+        this.gameOfLifeSimulator = java.util.Objects
+                .requireNonNullElseGet(gameOfLifeSimulator, PlainGameOfLifeSimulator::new);
+        this.board = new GameOfLifeCell[height][width];
+
+        fillBoardWithOption(option);
     }
 
     // Zwracamy kopię naszej planszy
@@ -89,13 +100,48 @@ public class GameOfLifeBoard implements Serializable, Cloneable {
         Random rand = new Random();
         for (int i = 0; i < this.board.length; i++) {
             for (int j = 0; j < this.board[0].length; j++) {
-                this.board[i][j] = new GameOfLifeCell(rand.nextBoolean());
+                board[i][j] = new GameOfLifeCell(rand.nextBoolean());
             }
         }
         for (int i = 0; i < this.board.length; i++) {
             for (int j = 0; j < this.board[0].length; j++) {
                 assignNeighborsToCell(i, j);
             }
+        }
+    }
+
+    private void fillBoardWithOption(int option) {
+        Random rand = new Random();
+        int width = board[0].length;
+        int height = board.length;
+        int totalCells = width * height;
+        int cellsToFill = (int) (totalCells * (option / 100.0));
+
+        for (int i = 0; i < this.board.length; i++) {
+            for (int j = 0; j < this.board[0].length; j++) {
+                board[i][j] = new GameOfLifeCell(false);
+            }
+        }
+
+        //Tworzony jest pusty Set, który będzie przechowywać unikalne indeksy komórek do wypełnienia.
+        Set<Integer> filledCells = new HashSet<>();
+
+        //Dopóki Set nie zawiera odpowiedniej liczby indeksów, losowane są kolejne indeksy i dodawane do Setu.
+        while (filledCells.size() < cellsToFill) {
+            // Generuje losową liczbę całkowitą od 0 do totalCells - 1
+            int cellIndex = rand.nextInt(totalCells);
+            // Próbuje dodać losowy indeks komórki do zestawu, jeśli już tam jest, to nie zostanie dodany.
+            filledCells.add(cellIndex);
+        }
+
+        //Iteruje po wszystkich indeksach komórek w zestawie i ustawia je na true.
+        for (int cellIndex : filledCells) {
+            // Oblicza współrzędne komórki na podstawie indeksu.
+            // Dzieli indeks komórki przez szerokość planszy, aby uzyskać indeks wiersza.
+            int i = cellIndex / width;
+            // Oblicza resztę z dzielenia indeksu komórki przez szerokość planszy, aby uzyskać indeks kolumny.
+            int j = cellIndex % width;
+            set(i, j, true);
         }
     }
 
