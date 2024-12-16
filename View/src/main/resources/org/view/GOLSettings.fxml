@@ -36,4 +36,6 @@
 
     <Button fx:id="confirmButton" />
 
+    <Label fx:id="authors" opacity="0.7" alignment="BOTTOM_CENTER"/>
+
 </VBox>

@@ -45,6 +45,7 @@ public class BoardController {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 // Tworzenie przycisku jako komórki
+                GameOfLifeCellAdapter adapter = new GameOfLifeCellAdapter(boardState[y][x]);
                 Button cell = new Button();
 
                 cell.setMinSize(cellSize, cellSize);
@@ -54,10 +55,9 @@ public class BoardController {
                 boolean isFilled = boardState[y][x].getValue();
                 updateCellStyle(cell, isFilled);
 
-                final int r = y, c = x; // Potrzebne do lambdy
                 cell.setOnAction(event -> {
-                    gameOfLifeBoard.set(r, c, !boardState[r][c].getValue()); // Zmień stan komórki
-                    updateCellStyle(cell, boardState[r][c].getValue());
+                    adapter.valueProperty().set(!adapter.valueProperty().get());
+                    updateCellStyle(cell, adapter.valueProperty().get());
                 });
 
                 boardPane.add(cell, x, y);
@@ -119,13 +119,6 @@ public class BoardController {
         File file = fileChooser.showOpenDialog(boardPane.getScene().getWindow());
 
         if (file != null) {
-            try {
-                // Ensure file has correct extension
-                String path = file.getPath();
-                if (!path.endsWith(".txt")) {
-                    path += ".txt";
-                }
-
                 try (FileGameOfLifeBoardDao dao = new FileGameOfLifeBoardDao(file.getPath())) {
                     gameOfLifeBoard = dao.read();
                     GameOfLifeCell[][] board = gameOfLifeBoard.getBoard();
@@ -134,8 +127,7 @@ public class BoardController {
                     initializeBoard(width, height, gameOfLifeBoard);
                     ResourceBundle messages = GOLApplication.getBundle();
                     showAlert(Alert.AlertType.INFORMATION, messages.getString("game.success"), messages.getString("game.load.success.message"));
-                }
-            } catch (Exception e) {
+                } catch (Exception e) {
                 ResourceBundle messages = GOLApplication.getBundle();
                 showAlert(Alert.AlertType.ERROR, messages.getString("game.fail"), messages.getString("game.load.fail.message") + " " + e.getMessage());
                 e.printStackTrace();

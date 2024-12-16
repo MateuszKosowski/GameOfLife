@@ -16,8 +16,8 @@ import java.util.*;
 // Implementację logiki aplikacji.
 public class GOLController {
 
-    private int width;
-    private int height;
+    private int width = 4;
+    private int height = 4;
     private int option;
 
     @FXML
@@ -53,6 +53,9 @@ public class GOLController {
     @FXML
     private RadioButton option3;
 
+    @FXML
+    private Label authors;
+
     public ToggleGroup groupOfLife;
 
     GameOfLifeBoard theGame;
@@ -60,14 +63,27 @@ public class GOLController {
     @FXML
     public void initialize() {
 
+        TextFieldUtils.applyMinMaxFormatter(widthField, 4, 20);
+        TextFieldUtils.applyMinMaxFormatter(heightField, 4, 20);
+
+        // Grupa przycisków aby wybrać opcję
         setGroup();
+
+        // Polski język jako domyślny
         setLanguage("pl", "PL");
 
+        // Wykorzystanie ListResourceBundle
+        ResourceBundle authorsBundle = ResourceBundle.getBundle("org.view.AuthorsResource");
+        authors.setText(authorsBundle.getString("author1") + ", " + authorsBundle.getString("author2"));
+
         confirmButton.setOnAction(e -> {
-            minMaxSize(widthField);
-            width = Integer.parseInt(widthField.getText());
-            minMaxSize(heightField);
-            height = Integer.parseInt(heightField.getText());
+            if (!widthField.getText().isEmpty()) {
+                width = Integer.parseInt(widthField.getText());
+
+            }
+            if (!heightField.getText().isEmpty()) {
+                height = Integer.parseInt(heightField.getText());
+            }
             getOption();
             theGame = createGame();
             try {
@@ -115,21 +131,6 @@ public class GOLController {
         } else if (option3.isSelected()) {
             option = 50;
         }
-    }
-
-    private void minMaxSize(TextField field) {
-        String input = field.getText();
-        try {
-            int size = Integer.parseInt(input);
-            if (size >= 4 && size <= 20) {
-                field.setText(String.valueOf(size));
-            } else {
-                field.setText(String.valueOf(4));
-            }
-        } catch (NumberFormatException e) {
-            field.setText(String.valueOf(4));
-        }
-
     }
 
     private void setLanguage(String language, String country) {
