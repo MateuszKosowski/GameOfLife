@@ -7,9 +7,7 @@ import javafx.scene.control.*;
 // import własnych klas
 import org.team1.*;
 
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 
 // Ta klasa odpowiada za:
@@ -23,13 +21,28 @@ public class GOLController {
     private int option;
 
     @FXML
+    private Button languageButtonPL;
+
+    @FXML
+    private Button languageButtonEN;
+
+    @FXML
     private TextField widthField;
+
+    @FXML
+    private Label widthLabel;
 
     @FXML
     private TextField heightField;
 
     @FXML
+    private Label heightLabel;
+
+    @FXML
     private Button confirmButton;
+
+    @FXML
+    private Label optionsLabel;
 
     @FXML
     private RadioButton option1;
@@ -48,6 +61,7 @@ public class GOLController {
     public void initialize() {
 
         setGroup();
+        setLanguage("pl", "PL");
 
         confirmButton.setOnAction(e -> {
             minMaxSize(widthField);
@@ -56,7 +70,6 @@ public class GOLController {
             height = Integer.parseInt(heightField.getText());
             getOption();
             theGame = createGame();
-            System.out.println("Width: " + widthField.getText() + " Height: " + heightField.getText()  + " Option: " + option);
             try {
                 FXMLLoader loaderBoardView = GOLApplication.switchView("BoardView.fxml");
                 BoardController controller = loaderBoardView.getController();
@@ -65,6 +78,19 @@ public class GOLController {
                 exception.printStackTrace();
             }
         });
+
+        languageButtonPL.setOnAction(e -> {
+            if (!Objects.equals(GOLApplication.getBundle().getLocale().getLanguage(), "pl")) {
+                setLanguage("pl", "PL");
+            }
+        });
+
+        languageButtonEN.setOnAction(e -> {
+            if (!Objects.equals(GOLApplication.getBundle().getLocale().getLanguage(), "en")) {
+                setLanguage("en", "US");
+            }
+        });
+
     }
 
     private void setGroup() {
@@ -103,6 +129,26 @@ public class GOLController {
         } catch (NumberFormatException e) {
             field.setText(String.valueOf(4));
         }
+
+    }
+
+    private void setLanguage(String language, String country) {
+        Locale currentLocale = new Locale(language, country);
+        GOLApplication.setLanguage(currentLocale, "settings.title");
+
+        ResourceBundle messages = GOLApplication.getBundle();
+
+        widthLabel.setText(messages.getString("settings.width.des"));
+        heightLabel.setText(messages.getString("settings.height.des"));
+        widthField.setPromptText(messages.getString("settings.size.placeholder"));
+        heightField.setPromptText(messages.getString("settings.size.placeholder"));
+        optionsLabel.setText(messages.getString("settings.option.des"));
+        option1.setText(messages.getString("settings.option.1"));
+        option2.setText(messages.getString("settings.option.2"));
+        option3.setText(messages.getString("settings.option.3"));
+        confirmButton.setText(messages.getString("settings.start"));
+        languageButtonPL.setText(messages.getString("settings.languagePL"));
+        languageButtonEN.setText(messages.getString("settings.languageEN"));
 
     }
 

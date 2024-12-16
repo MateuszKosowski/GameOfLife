@@ -6,6 +6,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 // Ta klasa odpowiada za:
 // Uruchamianie aplikacji.
@@ -15,6 +17,7 @@ import java.io.IOException;
 public class GOLApplication extends Application {
 
     private static Stage stage;
+    private static ResourceBundle bundle;
 
     @Override
     // Metoda start() odpowiada za inicjalizację aplikacji JavaFX.
@@ -23,15 +26,19 @@ public class GOLApplication extends Application {
 
         stage = pStage;
 
+        Locale locale = new Locale("pl", "PL");
+        bundle = ResourceBundle.getBundle("messages", locale);
+
         // FXMLLoader jest odpowiedzialny za wczytanie pliku FXML, który definiuje interfejs użytkownika.
         FXMLLoader fxmlLoader = new FXMLLoader(GOLApplication.class.getResource("GOLSettings.fxml"));
 
         // Scene reprezentuje zawartość okna aplikacji. przyjmuje jako argumenty obiekt Parent oraz szerokość i wysokość okna.
-        Scene sceneSettings = new Scene(fxmlLoader.load(), 1200, 800);
+        Scene sceneSettings = new Scene(fxmlLoader.load(), 600, 600);
         // Ustawienie tytułu okna.
-        stage.setTitle("Ustawienia Game of Life");
+        stage.setTitle(bundle.getString("settings.title"));
         // Ustawienie sceny w oknie.
         stage.setScene(sceneSettings);
+
         // Wyświetlenie okna.
         stage.show();
     }
@@ -48,5 +55,16 @@ public class GOLApplication extends Application {
     public static void main(String[] args) {
         // Metoda launch() uruchamia aplikację JavaFX.
         launch();
+    }
+
+    public static void setLanguage(Locale newLocale, String title) {
+        bundle = ResourceBundle.getBundle("messages", newLocale);
+        if (stage != null) {
+            stage.setTitle(bundle.getString(title));
+        }
+    }
+
+    public static ResourceBundle getBundle() {
+        return bundle;
     }
 }

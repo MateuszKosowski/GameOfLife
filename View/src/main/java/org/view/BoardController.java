@@ -8,6 +8,7 @@ import org.team1.*;
 import javafx.stage.FileChooser;
 import javafx.scene.control.Button;
 import java.io.File;
+import java.util.ResourceBundle;
 
 
 public class BoardController {
@@ -29,10 +30,12 @@ public class BoardController {
         gameOfLifeBoard = game;
         GameOfLifeCell[][] boardState = gameOfLifeBoard.getBoard();
         int cellSize = 35;
-        // Wyświetl informacje o wymiarach planszy
-        boardSizeLabel.setText("Plansza: " + width + " x " + height);
-        saveButton = new Button("Zapisz plansze");
-        loadButton = new Button("Wczytaj plansze");
+
+        ResourceBundle messages = GOLApplication.getBundle();
+        GOLApplication.setLanguage(messages.getLocale(), "game.title");
+        boardSizeLabel.setText(messages.getString("game.size") + " " + width + " x " + height);
+        saveButton.setText(messages.getString("game.save.button"));
+        loadButton.setText(messages.getString("game.load.button"));
 
         saveButton.setOnAction(e -> saveFile());
         loadButton.setOnAction(e -> loadFile());
@@ -94,10 +97,12 @@ public class BoardController {
 
                 try (FileGameOfLifeBoardDao dao = new FileGameOfLifeBoardDao(path)) {
                     dao.write(gameOfLifeBoard);
-                    showAlert(Alert.AlertType.INFORMATION, "Success", "Game saved successfully!");
+                    ResourceBundle messages = GOLApplication.getBundle();
+                    showAlert(Alert.AlertType.INFORMATION, messages.getString("game.success"), messages.getString("game.save.success.message"));
                 }
             } catch (Exception e) {
-                showAlert(Alert.AlertType.ERROR, "Error", "Could not save game: " + e.getMessage());
+                ResourceBundle messages = GOLApplication.getBundle();
+                showAlert(Alert.AlertType.ERROR, messages.getString("game.fail"), messages.getString("game.save.fail.message") + " " + e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -127,10 +132,12 @@ public class BoardController {
                     int width = board[0].length;
                     int height = board.length;
                     initializeBoard(width, height, gameOfLifeBoard);
-                    showAlert(Alert.AlertType.INFORMATION, "Success", "Game loaded successfully!");
+                    ResourceBundle messages = GOLApplication.getBundle();
+                    showAlert(Alert.AlertType.INFORMATION, messages.getString("game.success"), messages.getString("game.load.success.message"));
                 }
             } catch (Exception e) {
-                showAlert(Alert.AlertType.ERROR, "Error", "Could not load game: " + e.getMessage());
+                ResourceBundle messages = GOLApplication.getBundle();
+                showAlert(Alert.AlertType.ERROR, messages.getString("game.fail"), messages.getString("game.load.fail.message") + " " + e.getMessage());
                 e.printStackTrace();
             }
         }
