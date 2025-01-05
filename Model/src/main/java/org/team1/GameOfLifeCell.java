@@ -22,6 +22,8 @@ package org.team1;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -34,11 +36,13 @@ public class GameOfLifeCell implements Serializable, Cloneable, Comparable<GameO
     private final List<GameOfLifeCell> neighbors;
     private final PropertyChangeSupport support;
     private boolean value;
+    private static final Logger logger = LogManager.getLogger(GameOfLifeCell.class);
 
     public GameOfLifeCell(boolean value) {
         this.value = value;
         this.neighbors = Arrays.asList(new GameOfLifeCell[8]);
         this.support = new PropertyChangeSupport(this);
+        logger.info("Utworzono komórkę o wartości: {}", value);
     }
 
     // Getter dla listy sąsiadów
@@ -83,6 +87,7 @@ public class GameOfLifeCell implements Serializable, Cloneable, Comparable<GameO
         boolean oldState = value;
         value = newState;
         support.firePropertyChange("value", oldState, newState);
+        logger.info("Zaktualizowano stan komórki na: {}", newState);
     }
 
     // Nadpisanie metody toString()

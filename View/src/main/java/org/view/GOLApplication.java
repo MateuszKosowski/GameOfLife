@@ -4,6 +4,8 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.*;
+
 
 import java.io.IOException;
 import java.util.Locale;
@@ -18,11 +20,14 @@ public class GOLApplication extends Application {
 
     private static Stage stage;
     private static ResourceBundle bundle;
+    private static Logger logger;
 
     @Override
     // Metoda start() odpowiada za inicjalizację aplikacji JavaFX.
     // Jej argumentem jest obiekt Stage, który reprezentuje główne okno aplikacji.
     public void start(Stage pStage) throws IOException {
+
+        logger = LogManager.getLogger(GOLApplication.class);
 
         stage = pStage;
 
@@ -55,6 +60,7 @@ public class GOLApplication extends Application {
     public static void main(String[] args) {
         // Metoda launch() uruchamia aplikację JavaFX.
         launch();
+
     }
 
     public static void setLanguage(Locale newLocale, String title) {
