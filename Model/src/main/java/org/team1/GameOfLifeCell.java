@@ -133,10 +133,6 @@ public class GameOfLifeCell implements Serializable, Cloneable, Comparable<GameO
 
     @Override
     public GameOfLifeCell clone() {
-        GameOfLifeCell clone = new GameOfLifeCell(value);
-        for (int i = 0; i < neighbors.size(); i++) {
-            clone.neighbors.set(i, neighbors.get(i));
-        }
-        return clone;
+        return new GameOfLifeCell(value);
     }
 }

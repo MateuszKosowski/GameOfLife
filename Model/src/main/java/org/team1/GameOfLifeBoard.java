@@ -90,7 +90,7 @@ public class GameOfLifeBoard implements Serializable, Cloneable {
 
         for (int i = 0; i < this.board.length; i++) {
             for (int j = 0; j < this.board[0].length; j++) {
-                assignNeighborsToCell(i, j);
+                assignNeighborsToCell(this.board, i, j);
             }
         }
     }
@@ -105,7 +105,7 @@ public class GameOfLifeBoard implements Serializable, Cloneable {
         }
         for (int i = 0; i < this.board.length; i++) {
             for (int j = 0; j < this.board[0].length; j++) {
-                assignNeighborsToCell(i, j);
+                assignNeighborsToCell(board, i, j);
             }
         }
     }
@@ -143,10 +143,16 @@ public class GameOfLifeBoard implements Serializable, Cloneable {
             int j = cellIndex % width;
             set(i, j, true);
         }
+
+        for (int i = 0; i < this.board.length; i++) {
+            for (int j = 0; j < this.board[0].length; j++) {
+                assignNeighborsToCell(board, i, j);
+            }
+        }
     }
 
     // Każdy obiekt Cell ma 8 sąsiadów, więc przypisujemy sąsiadów dla każdego Cell
-    public void assignNeighborsToCell(int x, int y) {
+    public void assignNeighborsToCell(GameOfLifeCell[][] board, int x, int y) {
         List<GameOfLifeCell> neighbors = Arrays.asList(new GameOfLifeCell[8]);
         int index = 0;
         for (int i = x - 1; i <= x + 1; i++) {
@@ -244,6 +250,11 @@ public class GameOfLifeBoard implements Serializable, Cloneable {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
                 clone.board[i][j] = board[i][j].clone();
+            }
+        }
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                assignNeighborsToCell(clone.board, i, j);
             }
         }
         return clone;

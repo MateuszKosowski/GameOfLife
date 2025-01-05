@@ -10,5 +10,6 @@
     <Button fx:id="saveButton" onAction="#saveFile"/>
     <Button fx:id="loadButton" onAction="#loadFile"/>
     <GridPane fx:id="boardPane" alignment="CENTER"/>
+    <Button fx:id="doStepButton" onAction="#doStep"/>
 
 </VBox>

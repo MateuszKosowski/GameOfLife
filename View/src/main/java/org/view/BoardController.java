@@ -24,22 +24,30 @@ public class BoardController {
     @FXML
     private Button loadButton;
 
+    @FXML Button doStepButton;
+
     private GameOfLifeBoard gameOfLifeBoard;
 
     public void initializeBoard(int width, int height, GameOfLifeBoard game) {
         gameOfLifeBoard = game;
         GameOfLifeCell[][] boardState = gameOfLifeBoard.getBoard();
-        int cellSize = 35;
 
         ResourceBundle messages = GOLApplication.getBundle();
         GOLApplication.setLanguage(messages.getLocale(), "game.title");
         boardSizeLabel.setText(messages.getString("game.size") + " " + width + " x " + height);
         saveButton.setText(messages.getString("game.save.button"));
         loadButton.setText(messages.getString("game.load.button"));
+        doStepButton.setText(messages.getString("game.doStep.button"));
 
         saveButton.setOnAction(e -> saveFile());
         loadButton.setOnAction(e -> loadFile());
 
+        initializeCells(boardState, width, height);
+
+
+    }
+
+    private void initializeCells(GameOfLifeCell[][] boardState, int width, int height) {
         // Dodaj przykładowe kafelki do planszy (np. przyciski lub pola)
         boardPane.getChildren().clear(); // Wyczyść, jeśli istnieje zawartość
         for (int x = 0; x < width; x++) {
@@ -48,8 +56,8 @@ public class BoardController {
                 GameOfLifeCellAdapter adapter = new GameOfLifeCellAdapter(boardState[y][x]);
                 Button cell = new Button();
 
-                cell.setMinSize(cellSize, cellSize);
-                cell.setMaxSize(cellSize, cellSize);
+                cell.setMinSize(35, 35);
+                cell.setMaxSize(35, 35);
 
                 // Ustawienie koloru w zależności od stanu
                 boolean isFilled = boardState[y][x].getValue();
@@ -133,6 +141,13 @@ public class BoardController {
                 e.printStackTrace();
             }
         }
+    }
+
+    @FXML
+    private void doStep() {
+        gameOfLifeBoard.doSimulationStep();
+        GameOfLifeCell[][] board = gameOfLifeBoard.getBoard();
+        initializeCells(board, board[0].length, board.length);
     }
 
     private void showAlert(Alert.AlertType type, String title, String content) {
