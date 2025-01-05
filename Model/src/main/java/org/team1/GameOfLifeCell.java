@@ -87,7 +87,6 @@ public class GameOfLifeCell implements Serializable, Cloneable, Comparable<GameO
         boolean oldState = value;
         value = newState;
         support.firePropertyChange("value", oldState, newState);
-        logger.info("Zaktualizowano stan komórki na: {}", newState);
     }
 
     // Nadpisanie metody toString()

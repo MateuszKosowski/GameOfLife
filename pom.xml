@@ -75,9 +75,9 @@
                     <filesets>
                         <!-- Definicja dodatkowych plików/katalogów do usunięcia -->
                         <fileset>
-                            <directory>${project.basedir}/logs</directory>
+                            <directory>${project.basedir}/</directory>
                             <includes>
-                                <include>*/logs/app.log</include> <!-- Usuwa wszystkie pliki w katalogu -->
+                                <include>*/logs/*.log</include> <!-- Usuwa wszystkie pliki w katalogu -->
                             </includes>
                             <followSymlinks>false</followSymlinks>
                         </fileset>
