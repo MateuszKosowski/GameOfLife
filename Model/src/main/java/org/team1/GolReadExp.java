@@ -20,13 +20,17 @@ package org.team1;
  * #L%
  */
 
-public class GolNullPtrExp extends GolExp {
+import java.util.Locale;
 
-    public GolNullPtrExp(String messKey) {
+public class GolReadExp extends GolExp {
+
+    public GolReadExp(String messKey, String fileName) {
         super(messKey);
     }
 
-    public GolNullPtrExp(String messKey, Throwable cause) {
+    // Konstruktor z przyczyną
+    public GolReadExp(String messKey, Throwable cause, String fileName) {
         super(messKey, cause);
     }
+
 }

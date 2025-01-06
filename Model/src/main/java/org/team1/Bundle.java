@@ -20,13 +20,29 @@ package org.team1;
  * #L%
  */
 
-public class GolNullPtrExp extends GolExp {
+import java.util.Locale;
+import java.util.ResourceBundle;
 
-    public GolNullPtrExp(String messKey) {
-        super(messKey);
+public class Bundle {
+    private static Bundle instance;
+    protected static ResourceBundle bundle = ResourceBundle.getBundle("exceptions");
+
+    private Bundle() {
+        setLocale(new Locale("pl", "PL"));
     }
 
-    public GolNullPtrExp(String messKey, Throwable cause) {
-        super(messKey, cause);
+    public static Bundle getInstance() {
+        if (instance == null) {
+            instance = new Bundle();
+        }
+        return instance;
+    }
+
+    public void setLocale(Locale locale) {
+        bundle = ResourceBundle.getBundle("exceptions", locale);
+    }
+
+    public String getString(String key) {
+        return bundle.getString(key);
     }
 }

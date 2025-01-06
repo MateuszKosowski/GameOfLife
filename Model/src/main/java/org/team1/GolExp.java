@@ -20,32 +20,17 @@ package org.team1;
  * #L%
  */
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 public class GolExp extends RuntimeException {
 
-    protected static final ResourceBundle exceptionsMess = ResourceBundle.getBundle("exceptions");
-    protected Locale locale = new Locale("pl", "PL");
-
-    public GolExp(Locale expLang, String messKey) {
-        super(exceptionsMess.getString(messKey));
-        locale = expLang;
-    }
-
-    public GolExp(Locale expLang, String messKey, Throwable cause) {
-        super(exceptionsMess.getString(messKey), cause);
-        locale = expLang;
-    }
+    protected static final Bundle bundle = Bundle.getInstance();
 
     public GolExp(String messKey) {
-        super(exceptionsMess.getString(messKey));
+        super(bundle.getString(messKey));
     }
 
     public GolExp(String messKey, Throwable cause) {
-        super(exceptionsMess.getString(messKey), cause);
+        super(bundle.getString(messKey), cause);
     }
 
-    public Locale getLocale() {
-        return locale;
-    }
 }

@@ -20,10 +20,14 @@ package org.team1;
  * #L%
  */
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.*;
 
 public class FileGameOfLifeBoardDao implements Dao<GameOfLifeBoard>, AutoCloseable {
     private final String fileName;
+    private static final Logger logger = LogManager.getLogger(FileGameOfLifeBoardDao.class);
 
     public FileGameOfLifeBoardDao(String fileName) {
         this.fileName = fileName;
@@ -35,7 +39,12 @@ public class FileGameOfLifeBoardDao implements Dao<GameOfLifeBoard>, AutoCloseab
              ObjectInputStream ois = new ObjectInputStream(fis)) {
             return (GameOfLifeBoard) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException("Error reading file: " + fileName, e);
+            try {
+                throw new RuntimeException();
+            } catch (RuntimeException ex) {
+                logger.error("{} {}", Bundle.getInstance().getString("exp.read.file"), fileName);
+                throw new GolReadExp("exp.read.file", fileName);
+            }
         }
     }
 

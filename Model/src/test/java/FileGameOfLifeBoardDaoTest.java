@@ -85,7 +85,7 @@ public class FileGameOfLifeBoardDaoTest {
         try (FileGameOfLifeBoardDao reader = new FileGameOfLifeBoardDao("invalidFile.txt")) {
             // assertThrows oczekuje przekazania referencji do metody, która jest executable
             // dlatego podajemy referencję do metody (::read), a nie wywołanie metody
-            assertThrows(RuntimeException.class, reader::read);
+            assertThrows(GolReadExp.class, reader::read);
         } catch (Exception e) {
             e.printStackTrace();
         }

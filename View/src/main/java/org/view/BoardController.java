@@ -10,8 +10,8 @@ import javafx.scene.control.Button;
 import java.io.File;
 import java.util.ResourceBundle;
 
-
 public class BoardController {
+
     @FXML
     private GridPane boardPane;
 
@@ -43,8 +43,6 @@ public class BoardController {
         loadButton.setOnAction(e -> loadFile());
 
         initializeCells(boardState, width, height);
-
-
     }
 
     private void initializeCells(GameOfLifeCell[][] boardState, int width, int height) {
