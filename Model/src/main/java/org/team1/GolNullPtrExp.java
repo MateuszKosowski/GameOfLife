@@ -20,13 +20,11 @@ package org.team1;
  * #L%
  */
 
-public class GolNullPtrExp extends GolExp {
+public class GolNullPtrExp extends RuntimeException {
 
-    public GolNullPtrExp(String messKey) {
-        super(messKey);
-    }
+    protected static final Bundle bundle = Bundle.getInstance();
 
-    public GolNullPtrExp(String messKey, Throwable cause) {
-        super(messKey, cause);
+    public GolNullPtrExp(Throwable cause) {
+        super(bundle.getString("exp.null.cell"), cause);
     }
 }

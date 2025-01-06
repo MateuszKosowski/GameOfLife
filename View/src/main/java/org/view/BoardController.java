@@ -4,13 +4,18 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import javafx.scene.layout.GridPane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.team1.*;
 import javafx.stage.FileChooser;
 import javafx.scene.control.Button;
 import java.io.File;
 import java.util.ResourceBundle;
 
+
 public class BoardController {
+
+    private static final Logger logger = LogManager.getLogger(BoardController.class);
 
     @FXML
     private GridPane boardPane;
@@ -32,6 +37,7 @@ public class BoardController {
         gameOfLifeBoard = game;
         GameOfLifeCell[][] boardState = gameOfLifeBoard.getBoard();
 
+
         ResourceBundle messages = GOLApplication.getBundle();
         GOLApplication.setLanguage(messages.getLocale(), "game.title");
         boardSizeLabel.setText(messages.getString("game.size") + " " + width + " x " + height);
@@ -39,8 +45,20 @@ public class BoardController {
         loadButton.setText(messages.getString("game.load.button"));
         doStepButton.setText(messages.getString("game.doStep.button"));
 
-        saveButton.setOnAction(e -> saveFile());
-        loadButton.setOnAction(e -> loadFile());
+        saveButton.setOnAction(e -> {
+            try {
+                saveFile();
+            } catch (GolWriteExp ex) {
+                logger.error("{}", Bundle.getInstance().getString("exp.write.file"));
+            }
+        });
+        loadButton.setOnAction(e -> {
+            try {
+                loadFile();
+            } catch (GolReadExp ex) {
+                logger.error("{}", Bundle.getInstance().getString("exp.read.file"));
+            }
+        });
 
         initializeCells(boardState, width, height);
     }
@@ -81,7 +99,7 @@ public class BoardController {
 
     // Funkcja do zapisywania planszy
     @FXML
-    private void saveFile() {
+    private void saveFile() throws GolWriteExp {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
 
@@ -108,15 +126,15 @@ public class BoardController {
                 }
             } catch (Exception e) {
                 ResourceBundle messages = GOLApplication.getBundle();
-                showAlert(Alert.AlertType.ERROR, messages.getString("game.fail"), messages.getString("game.save.fail.message") + " " + e.getMessage());
-                e.printStackTrace();
+                showAlert(Alert.AlertType.ERROR, messages.getString("game.fail"), messages.getString("game.save.fail.message"));
+                throw new GolWriteExp(e);
             }
         }
     }
 
     // Funkcja do wczytywania planszy
     @FXML
-    private void loadFile() {
+    private void loadFile() throws GolReadExp {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("Text Files", "*.txt")
@@ -134,10 +152,10 @@ public class BoardController {
                     ResourceBundle messages = GOLApplication.getBundle();
                     showAlert(Alert.AlertType.INFORMATION, messages.getString("game.success"), messages.getString("game.load.success.message"));
                 } catch (Exception e) {
-                ResourceBundle messages = GOLApplication.getBundle();
-                showAlert(Alert.AlertType.ERROR, messages.getString("game.fail"), messages.getString("game.load.fail.message") + " " + e.getMessage());
-                e.printStackTrace();
-            }
+                    ResourceBundle messages = GOLApplication.getBundle();
+                    showAlert(Alert.AlertType.ERROR, messages.getString("game.fail"), messages.getString("game.load.fail.message"));
+                    throw new GolReadExp(e);
+                }
         }
     }
 

@@ -19,18 +19,14 @@ package org.team1;
  * limitations under the License.
  * #L%
  */
-import java.util.Locale;
 
-public class GolExp extends RuntimeException {
+import java.io.IOException;
+
+public class GolWriteExp extends IOException {
 
     protected static final Bundle bundle = Bundle.getInstance();
 
-    public GolExp(String messKey) {
-        super(bundle.getString(messKey));
+    public GolWriteExp(Throwable cause) {
+      super(bundle.getString("exp.write.file"), cause);
     }
-
-    public GolExp(String messKey, Throwable cause) {
-        super(bundle.getString(messKey), cause);
-    }
-
 }

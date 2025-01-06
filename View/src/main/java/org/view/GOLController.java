@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 
 // import własnych klas
+import org.apache.logging.log4j.LogManager;
 import org.team1.*;
 
 import java.util.*;
@@ -136,6 +137,7 @@ public class GOLController {
     private void setLanguage(String language, String country) {
         Locale currentLocale = new Locale(language, country);
         GOLApplication.setLanguage(currentLocale, "settings.title");
+        Bundle.getInstance().setLocale(currentLocale);
 
         ResourceBundle messages = GOLApplication.getBundle();
 

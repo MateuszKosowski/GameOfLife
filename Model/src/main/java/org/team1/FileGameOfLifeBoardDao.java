@@ -34,28 +34,26 @@ public class FileGameOfLifeBoardDao implements Dao<GameOfLifeBoard>, AutoCloseab
     }
 
     @Override
-    public GameOfLifeBoard read() {
+    public GameOfLifeBoard read() throws GolReadExp {
         try (FileInputStream fis = new FileInputStream(fileName);
              ObjectInputStream ois = new ObjectInputStream(fis)) {
             return (GameOfLifeBoard) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            try {
-                throw new RuntimeException();
-            } catch (RuntimeException ex) {
-                logger.error("{} {}", Bundle.getInstance().getString("exp.read.file"), fileName);
-                throw new GolReadExp("exp.read.file", fileName);
-            }
+            logger.error("{} {}", Bundle.getInstance().getString("exp.read.file"), fileName);
+            throw new GolReadExp(e);
         }
+
     }
 
     @Override
-    public void write(GameOfLifeBoard object) {
+    public void write(GameOfLifeBoard object) throws GolWriteExp {
         try (FileOutputStream fos = new FileOutputStream(fileName);
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
             oos.writeObject(object);
         } catch (IOException e) {
-            throw new RuntimeException("Error writing file: " + fileName, e);
-        }
+            logger.error("{} {}", Bundle.getInstance().getString("exp.write.file"), fileName);
+            throw new GolWriteExp(e);
+            }
     }
 
     @Override

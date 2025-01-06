@@ -62,7 +62,7 @@ public class FileGameOfLifeBoardDaoTest {
             GameOfLifeBoard board = new GameOfLifeBoard(3, 3, new PlainGameOfLifeSimulator());
 
             // Tutaj trzeba użyć lambdy, ponieważ metoda write przyjmuje argument typu GameOfLifeBoard
-            assertThrows(RuntimeException.class, () -> writer.write(board));
+            assertThrows(GolWriteExp.class, () -> writer.write(board));
 
             // Zwolnij blokadę (po wykonaniu testu)
             lock.release();

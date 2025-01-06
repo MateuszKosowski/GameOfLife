@@ -20,17 +20,14 @@ package org.team1;
  * #L%
  */
 
-import java.util.Locale;
+import java.io.IOException;
 
-public class GolReadExp extends GolExp {
+public class GolReadExp extends IOException {
 
-    public GolReadExp(String messKey, String fileName) {
-        super(messKey);
-    }
+    protected static final Bundle bundle = Bundle.getInstance();
 
-    // Konstruktor z przyczyną
-    public GolReadExp(String messKey, Throwable cause, String fileName) {
-        super(messKey, cause);
+    public GolReadExp(Throwable cause) {
+        super(bundle.getString("exp.read.file"), cause);
     }
 
 }

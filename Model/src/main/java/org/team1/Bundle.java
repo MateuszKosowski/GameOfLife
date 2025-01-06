@@ -20,6 +20,8 @@ package org.team1;
  * #L%
  */
 
+import org.apache.logging.log4j.LogManager;
+
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -35,6 +37,7 @@ public class Bundle {
         if (instance == null) {
             instance = new Bundle();
         }
+        LogManager.getLogger().info("GET INSTANCE USED");
         return instance;
     }
 
