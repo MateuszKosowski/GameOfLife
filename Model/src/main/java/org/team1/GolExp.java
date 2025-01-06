@@ -48,5 +48,4 @@ public class GolExp extends RuntimeException {
     public Locale getLocale() {
         return locale;
     }
-
 }

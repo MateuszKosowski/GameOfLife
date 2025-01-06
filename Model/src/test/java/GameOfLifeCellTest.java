@@ -216,7 +216,7 @@ public class GameOfLifeCellTest {
     @Test
     void compareToTest4() {
         GameOfLifeCell cell1 = null;
-        assertThrows(GolNullPtrCellExp.class, () -> this.cell.compareTo(cell1));
+        assertThrows(GolNullPtrExp.class, () -> this.cell.compareTo(cell1));
     }
 
 }

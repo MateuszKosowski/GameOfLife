@@ -135,7 +135,7 @@ public class GameOfLifeCell implements Serializable, Cloneable, Comparable<GameO
             }
             return Boolean.compare(value, o.value);
         } catch (NullPointerException e) {
-            throw new GolNullPtrCellExp("exp.null.cell");
+            throw new GolNullPtrExp("exp.null.cell");
         }
     }
 

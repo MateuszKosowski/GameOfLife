@@ -25,24 +25,27 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Locale;
 
-public class GolNullPtrCellExp extends GolExp {
+public class GolNullPtrExp extends GolExp {
 
-    private static final Logger logger = LogManager.getLogger(GolNullPtrCellExp.class);
+    private static final Logger logger = LogManager.getLogger(GolNullPtrExp.class);
 
-    public GolNullPtrCellExp(String messKey) {
+    public GolNullPtrExp(String messKey) {
         super(messKey);
-        logger.error(exceptionsMess.getString("exp.null.cell"));
+        logger.error(exceptionsMess.getString(messKey));
     }
 
-    public GolNullPtrCellExp(String messKey, Throwable cause) {
+    public GolNullPtrExp(String messKey, Throwable cause) {
         super(messKey, cause);
+        logger.error(exceptionsMess.getString(messKey));
     }
 
-    public GolNullPtrCellExp(Locale expLang, String messKey, Throwable cause) {
+    public GolNullPtrExp(Locale expLang, String messKey, Throwable cause) {
         super(expLang, messKey, cause);
+        logger.error(exceptionsMess.getString(messKey));
     }
 
-    public GolNullPtrCellExp(Locale expLang, String messKey) {
+    public GolNullPtrExp(Locale expLang, String messKey) {
         super(expLang, messKey);
+        logger.error(exceptionsMess.getString(messKey));
     }
 }
