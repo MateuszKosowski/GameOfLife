@@ -130,6 +130,11 @@ public class BoardController {
                 throw new GolWriteExp(e);
             }
         }
+
+//        // Zapis do bazy danych
+//        try (JdbcGameOfLifeBoardDao dao = new JdbcGameOfLifeBoardDao()) {
+//            dao.write(gameOfLifeBoard);
+//        } catch
     }
 
     // Funkcja do wczytywania planszy

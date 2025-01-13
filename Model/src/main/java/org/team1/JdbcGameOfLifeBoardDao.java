@@ -1,15 +1,31 @@
 package org.team1;
 
+/*-
+ * #%L
+ * GameOfLife
+ * %%
+ * Copyright (C) 2024 - 2025 Zespol1
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
-public class JdbcGameOfLifeBoardDao implements Dao<GameOfLifeBoard>, AutoCloseable{
+public class JdbcGameOfLifeBoardDao implements Dao<GameOfLifeBoard>, AutoCloseable {
 
     private Connection connection;
 
@@ -33,38 +49,93 @@ public class JdbcGameOfLifeBoardDao implements Dao<GameOfLifeBoard>, AutoCloseab
 
     @Override
     public GameOfLifeBoard read(String name) throws GolReadExp {
-        String sql = "SELECT name, height, width FROM Board WHERE name = " + name;
+        String selectBoardSql = "SELECT id_board, name, height, width FROM board WHERE name = ?";
+        String selectCellsSql = "SELECT value, pos_x, pos_y FROM cell WHERE id_board = ?";
 
-        try (PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
+        try (PreparedStatement boardStatement = connection.prepareStatement(selectBoardSql);
+             PreparedStatement cellStatement = connection.prepareStatement(selectCellsSql)) {
 
-            while (resultSet.next()) {
-                String name1 = resultSet.getString("name");
-                int height = resultSet.getInt("height");
-                int width = resultSet.getInt("width");
-                return new GameOfLifeBoard(name1, height, width);
+            // Ustawienie parametru nazwy planszy
+            boardStatement.setString(1, name);
+
+            try (ResultSet boardResultSet = boardStatement.executeQuery()) {
+                if (boardResultSet.next()) {
+                    int boardId = boardResultSet.getInt("id_board");
+                    String boardName = boardResultSet.getString("name");
+                    int height = boardResultSet.getInt("height");
+                    int width = boardResultSet.getInt("width");
+
+                    GameOfLifeBoard board = new GameOfLifeBoard(boardName, height, width);
+
+                    // Ustawienie parametru id planszy do zapytania o komórki
+                    cellStatement.setInt(1, boardId);
+
+                    try (ResultSet cellResultSet = cellStatement.executeQuery()) {
+                        while (cellResultSet.next()) {
+                            boolean value = cellResultSet.getBoolean("value");
+                            int posX = cellResultSet.getInt("pos_x");
+                            int posY = cellResultSet.getInt("pos_y");
+
+                            board.set(posX, posY, value);
+                        }
+                    }
+
+                    logger.info(bundle.getString("db.read.success"));
+                    return board;
+                } else {
+                    logger.warn(bundle.getString("db.read.not_found"));
+                }
             }
 
         } catch (SQLException e) {
             logger.error(bundle.getString("db.read.error"), e);
         }
+
         return null;
     }
+
 
     @Override
     public void write(GameOfLifeBoard board) {
         String sql = "INSERT INTO board (name, width, height) VALUES (?, ?, ?)";
+        String sql1 = "INSERT INTO cell (value, pos_x, pos_y, id_board) VALUES (?, ?, ?, ?)";
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement boardStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+             PreparedStatement cellStatement = connection.prepareStatement(sql1)
+        ) {
 
             GameOfLifeCell[][] gameBoard = board.getBoard();
-            statement.setString(1, board.getName());
-            statement.setInt(2, gameBoard.length);
-            statement.setInt(3, gameBoard[0].length);
-            statement.executeUpdate();
+            boardStatement.setString(1, board.getName());
+            boardStatement.setInt(2, gameBoard.length);
+            boardStatement.setInt(3, gameBoard[0].length);
+            boardStatement.executeUpdate();
+
+            ResultSet generatedKeys = boardStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int boardId = generatedKeys.getInt(1);
+
+                for (int i = 0; i < gameBoard.length; i++) {
+                    for (int j = 0; j < gameBoard[0].length; j++) {
+                        cellStatement.setBoolean(1, gameBoard[i][j].getValue());
+                        cellStatement.setInt(2, i);
+                        cellStatement.setInt(3, j);
+                        cellStatement.setInt(4, boardId);
+                        cellStatement.addBatch();
+                    }
+                }
+
+                cellStatement.executeBatch();
+                connection.commit();
+            }
+
             logger.info(bundle.getString("db.insert.success"));
 
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException rollbackEx) {
+                logger.error(bundle.getString("db.rollback.error"), rollbackEx);
+            }
             logger.error(bundle.getString("db.insert.error"), e);
         }
     }
@@ -74,6 +145,7 @@ public class JdbcGameOfLifeBoardDao implements Dao<GameOfLifeBoard>, AutoCloseab
         try {
             if (connection != null && !connection.isClosed()) {
                 connection.close();
+                logger.info(bundle.getString("db.connection.close"));
             }
         } catch (SQLException e) {
             logger.error(bundle.getString("db.connection.error"), e);

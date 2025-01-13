@@ -21,6 +21,7 @@
 package org.team1;
 
 import com.google.common.base.MoreObjects;
+import org.apache.logging.log4j.LogManager;
 
 import java.io.Serializable;
 import java.util.*;
@@ -63,6 +64,8 @@ public class GameOfLifeBoard implements Serializable, Cloneable {
     public GameOfLifeBoard(String name, int height, int width, GameOfLifeSimulator gameOfLifeSimulator, int option) {
         if (name.isBlank() || name.isEmpty()) {
             name = String.valueOf(new Random().nextInt());
+        } else {
+            this.name = name;
         }
         if (height < 0 || width < 0) {
             height = 3;
@@ -85,6 +88,12 @@ public class GameOfLifeBoard implements Serializable, Cloneable {
         }
         this.gameOfLifeSimulator = new PlainGameOfLifeSimulator();
         this.board = new GameOfLifeCell[height][width];
+
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                board[i][j] = new GameOfLifeCell(false);
+            }
+        }
     }
 
     // Zwracamy kopię naszej planszy
@@ -97,6 +106,7 @@ public class GameOfLifeBoard implements Serializable, Cloneable {
     }
 
     public String getName() {
+        LogManager.getLogger().info("NAME: {}", name);
         return name;
     }
 

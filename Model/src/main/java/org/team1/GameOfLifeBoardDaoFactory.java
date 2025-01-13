@@ -25,4 +25,8 @@ public abstract class GameOfLifeBoardDaoFactory {
     static Dao<GameOfLifeBoard> createFileGameOfLifeBoardDao(String filename) throws IOException {
         return new FileGameOfLifeBoardDao(filename);
     }
+
+    static Dao<GameOfLifeBoard> createJdbcGameOfLifeBoardDao() {
+        return new JdbcGameOfLifeBoardDao();
+    }
 }

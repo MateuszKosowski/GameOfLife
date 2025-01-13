@@ -4,7 +4,7 @@ package org.team1;
  * #%L
  * GameOfLife
  * %%
- * Copyright (C) 2024 Zespol1
+ * Copyright (C) 2024 - 2025 Zespol1
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,13 @@ package org.team1;
  * #L%
  */
 
-public interface Dao<T> extends AutoCloseable {
-    T read(String name) throws GolReadExp, GolSqlExp;
+import java.sql.SQLException;
 
-    void write(T object) throws GolWriteExp, GolSqlExp;
+public class GolSqlExp extends SQLException {
+
+    protected static final Bundle bundle = Bundle.getInstance();
+
+    public GolSqlExp(Throwable cause) {
+        super(bundle.getString("exp.sql.error"), cause);
+    }
 }
