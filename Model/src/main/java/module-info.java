@@ -21,5 +21,6 @@ module org.team1 {
     requires com.google.common;
     requires org.apache.logging.log4j.core;
     requires java.desktop;
+    requires java.sql;
     exports org.team1;
 }

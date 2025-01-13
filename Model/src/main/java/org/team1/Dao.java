@@ -21,7 +21,7 @@ package org.team1;
  */
 
 public interface Dao<T> extends AutoCloseable {
-    T read() throws GolReadExp;
+    T read(String name) throws GolReadExp, GolSQLExp;
 
-    void write(T object) throws GolWriteExp;
+    void write(T object) throws GolWriteExp, GolSQLExp;
 }

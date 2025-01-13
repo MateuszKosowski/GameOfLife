@@ -34,7 +34,7 @@ public class FileGameOfLifeBoardDao implements Dao<GameOfLifeBoard>, AutoCloseab
     }
 
     @Override
-    public GameOfLifeBoard read() throws GolReadExp {
+    public GameOfLifeBoard read(String name) throws GolReadExp {
         try (FileInputStream fis = new FileInputStream(fileName);
              ObjectInputStream ois = new ObjectInputStream(fis)) {
             return (GameOfLifeBoard) ois.readObject();
@@ -42,7 +42,6 @@ public class FileGameOfLifeBoardDao implements Dao<GameOfLifeBoard>, AutoCloseab
             logger.error("{} {}", Bundle.getInstance().getString("exp.read.file"), fileName);
             throw new GolReadExp(e);
         }
-
     }
 
     @Override

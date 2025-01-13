@@ -144,7 +144,7 @@ public class BoardController {
 
         if (file != null) {
                 try (FileGameOfLifeBoardDao dao = new FileGameOfLifeBoardDao(file.getPath())) {
-                    gameOfLifeBoard = dao.read();
+                    gameOfLifeBoard = dao.read("");
                     GameOfLifeCell[][] board = gameOfLifeBoard.getBoard();
                     int width = board[0].length;
                     int height = board.length;

@@ -27,6 +27,7 @@ import java.util.*;
 
 public class GameOfLifeBoard implements Serializable, Cloneable {
 
+    private String name = "";
     private final GameOfLifeCell[][] board;
     private final GameOfLifeSimulator gameOfLifeSimulator;
 
@@ -36,6 +37,7 @@ public class GameOfLifeBoard implements Serializable, Cloneable {
             height = 3;
             width = 3;
         }
+        name = String.valueOf(new Random().nextInt());
         this.gameOfLifeSimulator = java.util.Objects
                 .requireNonNullElseGet(gameOfLifeSimulator, PlainGameOfLifeSimulator::new);
         this.board = new GameOfLifeCell[height][width];
@@ -49,11 +51,40 @@ public class GameOfLifeBoard implements Serializable, Cloneable {
             height = 3;
             width = 3;
         }
+        name = String.valueOf(new Random().nextInt());
         this.gameOfLifeSimulator = java.util.Objects
                 .requireNonNullElseGet(gameOfLifeSimulator, PlainGameOfLifeSimulator::new);
         this.board = new GameOfLifeCell[height][width];
 
         fillBoardWithOption(option);
+    }
+
+    // Konstruktor z opcja, który tworzy planszę o podanych wymiarach i przypisuje obiekt GameOfLifeSimulator
+    public GameOfLifeBoard(String name, int height, int width, GameOfLifeSimulator gameOfLifeSimulator, int option) {
+        if (name.isBlank() || name.isEmpty()) {
+            name = String.valueOf(new Random().nextInt());
+        }
+        if (height < 0 || width < 0) {
+            height = 3;
+            width = 3;
+        }
+        this.gameOfLifeSimulator = java.util.Objects
+                .requireNonNullElseGet(gameOfLifeSimulator, PlainGameOfLifeSimulator::new);
+        this.board = new GameOfLifeCell[height][width];
+
+        fillBoardWithOption(option);
+    }
+
+    public GameOfLifeBoard(String name, int height, int width) {
+        if (name.isBlank()) {
+            name = String.valueOf(new Random().nextInt());
+        }
+        if (height < 0 || width < 0) {
+            height = 3;
+            width = 3;
+        }
+        this.gameOfLifeSimulator = new PlainGameOfLifeSimulator();
+        this.board = new GameOfLifeCell[height][width];
     }
 
     // Zwracamy kopię naszej planszy
@@ -63,6 +94,14 @@ public class GameOfLifeBoard implements Serializable, Cloneable {
             System.arraycopy(board[i], 0, tempBoard[i], 0, board[0].length);
         }
         return tempBoard;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String newName) {
+        name = newName;
     }
 
     // Zwracamy wartość obiektu Cell na podstawie współrzędnych
