@@ -84,14 +84,14 @@ public class JdbcGameOfLifeBoardDao implements Dao<GameOfLifeBoard>, AutoCloseab
                     return board;
                 } else {
                     logger.warn(bundle.getString("db.read.not_found"));
+                    throw new GolReadExp(new Exception(bundle.getString("db.read.not_found")));
                 }
             }
 
         } catch (SQLException e) {
             logger.error(bundle.getString("db.read.error"), e);
+            throw new GolReadExp(e);
         }
-
-        return null;
     }
 
 

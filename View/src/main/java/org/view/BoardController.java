@@ -108,19 +108,28 @@ public class BoardController {
     // Funkcja do wczytywania planszy z bazy danych
     @FXML
     private void loadFromDB() throws GolReadExp {
-//        try (JdbcGameOfLifeBoardDao dao = new JdbcGameOfLifeBoardDao()) {
-//            gameOfLifeBoard = dao.read("");
-//            GameOfLifeCell[][] board = gameOfLifeBoard.getBoard();
-//            int width = board[0].length;
-//            int height = board.length;
-//            initializeBoard(width, height, gameOfLifeBoard);
-//            ResourceBundle messages = GOLApplication.getBundle();
-//            showAlert(Alert.AlertType.INFORMATION, messages.getString("game.success"), messages.getString("game.db.load.success.message"));
-//        } catch (Exception e) {
-//            ResourceBundle messages = GOLApplication.getBundle();
-//            showAlert(Alert.AlertType.ERROR, messages.getString("game.fail"), messages.getString("game.db.load.fail.message"));
-//            throw new GolReadExp(e);
-//        }
+        ResourceBundle messages = GOLApplication.getBundle();
+
+        TextInputDialog dialog2 = new TextInputDialog();
+        dialog2.setTitle(messages.getString("game.db.info.load"));
+        dialog2.setHeaderText(messages.getString("game.db.board.name.load.des"));
+        dialog2.setContentText(messages.getString("game.db.board.name.load.placeholder"));
+
+        dialog2.showAndWait().ifPresent(name -> {
+            gameOfLifeBoard.setName(name); // Set the board name
+            try (JdbcGameOfLifeBoardDao dao = new JdbcGameOfLifeBoardDao()) {
+
+                gameOfLifeBoard = dao.read(name);
+                GameOfLifeCell[][] board = gameOfLifeBoard.getBoard();
+                int width = board[0].length;
+                int height = board.length;
+                initializeBoard(width, height, gameOfLifeBoard);
+
+                showAlert(Alert.AlertType.INFORMATION, messages.getString("game.success"), messages.getString("game.db.load.success.message"));
+            } catch (Exception e) {
+                showAlert(Alert.AlertType.ERROR, messages.getString("game.fail"), messages.getString("game.db.load.fail.message"));
+            }
+        });
     }
 
     private void initializeCells(GameOfLifeCell[][] boardState, int width, int height) {
@@ -190,11 +199,6 @@ public class BoardController {
                 throw new GolWriteExp(e);
             }
         }
-
-//        // Zapis do bazy danych
-//        try (JdbcGameOfLifeBoardDao dao = new JdbcGameOfLifeBoardDao()) {
-//            dao.write(gameOfLifeBoard);
-//        } catch
     }
 
     // Funkcja do wczytywania planszy
