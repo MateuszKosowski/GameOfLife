@@ -31,6 +31,10 @@ public class BoardController {
 
     @FXML Button doStepButton;
 
+    @FXML Button dbSaveButton;
+
+    @FXML Button dbLoadButton;
+
     private GameOfLifeBoard gameOfLifeBoard;
 
     public void initializeBoard(int width, int height, GameOfLifeBoard game) {
@@ -43,6 +47,8 @@ public class BoardController {
         boardSizeLabel.setText(messages.getString("game.size") + " " + width + " x " + height);
         saveButton.setText(messages.getString("game.save.button"));
         loadButton.setText(messages.getString("game.load.button"));
+        dbLoadButton.setText(messages.getString("game.db.load.button"));
+        dbSaveButton.setText(messages.getString("game.db.save.button"));
         doStepButton.setText(messages.getString("game.doStep.button"));
 
         saveButton.setOnAction(e -> {
@@ -59,8 +65,62 @@ public class BoardController {
                 logger.error("{}", Bundle.getInstance().getString("exp.read.file"));
             }
         });
+        dbSaveButton.setOnAction(e -> {
+            try {
+                saveToDB();
+            } catch (GolWriteExp ex) {
+                logger.error("{}", Bundle.getInstance().getString("db.insert.error"));
+            }
+        });
+        dbLoadButton.setOnAction(e -> {
+            try {
+                loadFromDB();
+            } catch (GolReadExp ex) {
+                logger.error("{}", Bundle.getInstance().getString("db.read.error"));
+            }
+        });
 
         initializeCells(boardState, width, height);
+    }
+
+    // Funkcja do zapisywania planszy do bazy danych
+    @FXML
+    private void saveToDB() throws GolWriteExp {
+
+        ResourceBundle messages = GOLApplication.getBundle();
+
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle(messages.getString("game.db.info.save"));
+        dialog.setHeaderText(messages.getString("game.db.board.name.des"));
+        dialog.setContentText(messages.getString("game.db.board.name.placeholder"));
+
+        dialog.showAndWait().ifPresent(name -> {
+            gameOfLifeBoard.setName(name); // Set the board name
+            try (JdbcGameOfLifeBoardDao dao = new JdbcGameOfLifeBoardDao()) {
+                dao.write(gameOfLifeBoard);
+                showAlert(Alert.AlertType.INFORMATION, messages.getString("game.success"), messages.getString("game.db.save.success.message"));
+            } catch (Exception e) {
+                showAlert(Alert.AlertType.ERROR, messages.getString("game.fail"), messages.getString("game.db.save.fail.message"));
+            }
+        });
+    }
+
+    // Funkcja do wczytywania planszy z bazy danych
+    @FXML
+    private void loadFromDB() throws GolReadExp {
+//        try (JdbcGameOfLifeBoardDao dao = new JdbcGameOfLifeBoardDao()) {
+//            gameOfLifeBoard = dao.read("");
+//            GameOfLifeCell[][] board = gameOfLifeBoard.getBoard();
+//            int width = board[0].length;
+//            int height = board.length;
+//            initializeBoard(width, height, gameOfLifeBoard);
+//            ResourceBundle messages = GOLApplication.getBundle();
+//            showAlert(Alert.AlertType.INFORMATION, messages.getString("game.success"), messages.getString("game.db.load.success.message"));
+//        } catch (Exception e) {
+//            ResourceBundle messages = GOLApplication.getBundle();
+//            showAlert(Alert.AlertType.ERROR, messages.getString("game.fail"), messages.getString("game.db.load.fail.message"));
+//            throw new GolReadExp(e);
+//        }
     }
 
     private void initializeCells(GameOfLifeCell[][] boardState, int width, int height) {

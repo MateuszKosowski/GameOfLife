@@ -96,7 +96,7 @@ public class JdbcGameOfLifeBoardDao implements Dao<GameOfLifeBoard>, AutoCloseab
 
 
     @Override
-    public void write(GameOfLifeBoard board) {
+    public void write(GameOfLifeBoard board) throws GolWriteExp {
         String sql = "INSERT INTO board (name, width, height) VALUES (?, ?, ?)";
         String sql1 = "INSERT INTO cell (value, pos_x, pos_y, id_board) VALUES (?, ?, ?, ?)";
 
@@ -126,6 +126,7 @@ public class JdbcGameOfLifeBoardDao implements Dao<GameOfLifeBoard>, AutoCloseab
 
                 cellStatement.executeBatch();
                 connection.commit();
+                generatedKeys.close();
             }
 
             logger.info(bundle.getString("db.insert.success"));
@@ -135,8 +136,10 @@ public class JdbcGameOfLifeBoardDao implements Dao<GameOfLifeBoard>, AutoCloseab
                 connection.rollback();
             } catch (SQLException rollbackEx) {
                 logger.error(bundle.getString("db.rollback.error"), rollbackEx);
+                throw new GolWriteExp(rollbackEx);
             }
             logger.error(bundle.getString("db.insert.error"), e);
+            throw new GolWriteExp(e);
         }
     }
 
